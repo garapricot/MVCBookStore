@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMVCBookStore", "MyMVCBookStore\MyMVCBookStore.csproj", "{EFF1EF99-7A03-46B9-B271-6BB30F06C8B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{C2B4153E-1D91-469F-A826-078C1AC2C6E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFF1EF99-7A03-46B9-B271-6BB30F06C8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF1EF99-7A03-46B9-B271-6BB30F06C8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF1EF99-7A03-46B9-B271-6BB30F06C8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF1EF99-7A03-46B9-B271-6BB30F06C8B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2B4153E-1D91-469F-A826-078C1AC2C6E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B4153E-1D91-469F-A826-078C1AC2C6E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B4153E-1D91-469F-A826-078C1AC2C6E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B4153E-1D91-469F-A826-078C1AC2C6E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
