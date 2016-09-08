@@ -19,15 +19,7 @@ namespace MyMVCBookStore.Controllers
         // GET: Books
         public async Task<ActionResult> Index()
         {
-            /*var booksResult =
-                await (from books in db.Books
-                       join genreBooks in db.GenreBooks on books.Id equals genreBooks.GenreId
-                       from genres in db.Genres
-                       join genreBooks2 in db.GenreBooks on genres.Id equals genreBooks2.GenreId
-                       select new { Genres = genres, Books = books }).ToListAsync();*/
-            var books = db.Books;
-
-            string s = "sfaa";
+            var books = db.Books.Include(b => b.Author).Include(b => b.Country);
             return View(await books.ToListAsync());
         }
 
@@ -49,6 +41,7 @@ namespace MyMVCBookStore.Controllers
         // GET: Books/Create
         public ActionResult Create()
         {
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName");
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name");
             return View();
         }
@@ -58,7 +51,7 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,Title,Price,Author,Description,PageCount,Image")] Book book)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -67,6 +60,7 @@ namespace MyMVCBookStore.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
             return View(book);
         }
@@ -83,6 +77,7 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
             return View(book);
         }
@@ -92,7 +87,7 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CountryId,Title,Price,Author,Description,PageCount,Image")] Book book)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -100,6 +95,7 @@ namespace MyMVCBookStore.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
             return View(book);
         }

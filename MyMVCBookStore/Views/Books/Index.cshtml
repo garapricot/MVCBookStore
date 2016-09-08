@@ -12,7 +12,10 @@
 <table class="table">
     <tr>
         <th>
-           <p>Countries</p>
+            @Html.DisplayNameFor(model => model.Author.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Country.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -21,7 +24,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.PublishedDay)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -38,6 +41,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.Author.FirstName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Country.Name)
         </td>
         <td>
@@ -47,7 +53,7 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Author)
+            @Html.DisplayFor(modelItem => item.PublishedDay)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)

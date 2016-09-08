@@ -11,6 +11,14 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Author.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author.FirstName)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Country.Name)
         </dt>
 
@@ -35,11 +43,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.PublishedDay)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Author)
+            @Html.DisplayFor(model => model.PublishedDay)
         </dd>
 
         <dt>

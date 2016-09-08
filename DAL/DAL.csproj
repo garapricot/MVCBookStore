@@ -86,10 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\BookDbContext.cs" />
+    <Compile Include="Entities\Author.cs" />
     <Compile Include="Entities\Book.cs" />
     <Compile Include="Entities\Country.cs" />
-    <Compile Include="Entities\Genre.cs" />
-    <Compile Include="Entities\GenreBook.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
