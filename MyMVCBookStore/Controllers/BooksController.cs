@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using DAL.Context;
 using DAL.Entities;
+using DAL.Services;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MyMVCBookStore.Controllers
 {
@@ -17,10 +19,28 @@ namespace MyMVCBookStore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public async Task<ActionResult> Index()
+        public  ActionResult Index()
         {
+
             var books = db.Books.Include(b => b.Author).Include(b => b.Country);
-            return View(await books.ToListAsync());
+            List<Book> bookResult = new List<Book>();
+            foreach (var item in books)
+            {
+                bookResult.Add(new Book
+                {
+                    Title = item.Title,
+                    PageCount = item.PageCount,
+                    Description = item.Description,
+                    PublishedDay = item.PublishedDay,
+                    Author = item.Author,
+                    Image = item.Image,
+                    Price = item.Price,
+                    Country = item.Country
+                });
+            }
+            //var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            //service.CreateBook(model.Title,model.PageCount,model.Description,model.PublishedDay,model.Author,model.Image,model.Price);
+            return View(bookResult);
         }
 
         // GET: Books/Details/5
@@ -54,6 +74,8 @@ namespace MyMVCBookStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book,HttpPostedFileBase upimage)
         {
+           
+            
             if (ModelState.IsValid)
             {
                 if (upimage != null)
