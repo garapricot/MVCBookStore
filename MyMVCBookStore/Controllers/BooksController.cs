@@ -41,6 +41,7 @@ namespace MyMVCBookStore.Controllers
         // GET: Books/Create
         public ActionResult Create()
         {
+           
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName");
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name");
             return View();
@@ -51,23 +52,29 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book,HttpPostedFileBase upimage)
         {
             if (ModelState.IsValid)
             {
+                if (upimage != null)
+                {
+                    book.Image = new byte[upimage.ContentLength];
+                    upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
+                }
                 db.Books.Add(book);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
+            
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
             return View(book);
         }
-
+       
         // GET: Books/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+          
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

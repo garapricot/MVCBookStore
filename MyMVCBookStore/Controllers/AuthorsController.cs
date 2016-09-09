@@ -48,7 +48,7 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,BirthDay,Image")] Author author)
+        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,BirthDay,Bio")] Author author)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,BirthDay,Image")] Author author)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,BirthDay,Bio")] Author author)
         {
             if (ModelState.IsValid)
             {
