@@ -1,28 +1,61 @@
 ﻿using DAL.Context;
 using DAL.Entities;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Services
 {
-    public class BookService
+    public class ViewModelService : IDisposable
     {
-        private ApplicationDbContext db;        
-        public BookService(ApplicationDbContext dbContext)
+        private ApplicationDbContext db;
+        public ViewModelService(ApplicationDbContext dbContext)
         {
-            db = dbContext;            
+            db = dbContext;
         }
-
-        public void CreateBook(string title, int pageCount, string description, DateTime? publishedDay, Author author, byte[] image, decimal price)
+        public List<BookViewModel> CreateBook()
         {
-            var book = new Book { Title = title, PageCount = pageCount, Description = description, PublishedDay = publishedDay, Author = author, Image = image, Price = price };
-            db.Books.Add(book);
-            db.SaveChanges();
+            var books = db.Books.ToList();
+            List<BookViewModel> result = new List<BookViewModel>();
+            foreach (var item in books)
+            {
+                result.Add(new BookViewModel
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    PageCount = item.PageCount,
+                    Description = item.Description,
+                    PublishedDay = item.PublishedDay,
+                    Author = item.Author,
+                    Image = item.Image,
+                    Price = item.Price + item.Country.CountryCode,
+                    Country = item.Country
+                });
+            }
+            return result;
+        }
+        public BookViewModel EditDetalisDelObject(Book book)
+        {
+            var result = new BookViewModel
+            {
+                Id = book.Id,
+                Title = book.Title,
+                PageCount = book.PageCount,
+                Description = book.Description,
+                PublishedDay = book.PublishedDay,
+                Author = book.Author,
+                Image = book.Image,
+                Price = book.Price,
+                Country = book.Country
+            };
+            return result;
+        }
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }
+
+

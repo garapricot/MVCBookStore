@@ -1,4 +1,4 @@
-﻿@model DAL.Entities.Book
+﻿@model DAL.Models.BookViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,11 +11,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Author.FirstName)
+            @Html.DisplayNameFor(model => model.Author.FirstName) 
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Author.FirstName)
+            @Html.DisplayFor(model => model.Author.FirstName) @Html.DisplayFor(model => model.Author.LastName)
         </dd>
 
         <dt>
@@ -39,7 +39,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Price)
+           @{
+               var Price = Model.Price + Model.Country.CountryCode;
+            }
+            @Price
         </dd>
 
         <dt>

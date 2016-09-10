@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DAL.Entities.Book>
+﻿@model IEnumerable<DAL.Models.BookViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -42,7 +42,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Author.FirstName)
+                @Html.DisplayFor(modelItem => item.Author.FirstName) @Html.DisplayFor(modelItem => item.Author.LastName)                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Country.Name)

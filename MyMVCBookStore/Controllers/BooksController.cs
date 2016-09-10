@@ -11,6 +11,7 @@ using DAL.Context;
 using DAL.Entities;
 using DAL.Services;
 using Microsoft.AspNet.Identity.Owin;
+using DAL.Models;
 
 namespace MyMVCBookStore.Controllers
 {
@@ -20,27 +21,10 @@ namespace MyMVCBookStore.Controllers
 
         // GET: Books
         public  ActionResult Index()
-        {
-
-            var books = db.Books.Include(b => b.Author).Include(b => b.Country);
-            List<Book> bookResult = new List<Book>();
-            foreach (var item in books)
-            {
-                bookResult.Add(new Book
-                {
-                    Title = item.Title,
-                    PageCount = item.PageCount,
-                    Description = item.Description,
-                    PublishedDay = item.PublishedDay,
-                    Author = item.Author,
-                    Image = item.Image,
-                    Price = item.Price,
-                    Country = item.Country
-                });
-            }
-            //var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            //service.CreateBook(model.Title,model.PageCount,model.Description,model.PublishedDay,model.Author,model.Image,model.Price);
-            return View(bookResult);
+        {                   
+            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var result=service.CreateBook();
+            return View(result);
         }
 
         // GET: Books/Details/5
@@ -50,18 +34,19 @@ namespace MyMVCBookStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = await db.Books.FindAsync(id);
+            var book = await db.Books.FindAsync(id);
             if (book == null)
-            {
-                return HttpNotFound();
+            {                
+                return Content("Siktir");
             }
-            return View(book);
+            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var result = service.EditDetalisDelObject(book);
+            return View(result);
         }
 
         // GET: Books/Create
         public ActionResult Create()
-        {
-           
+        {           
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName");
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name");
             return View();
@@ -87,8 +72,7 @@ namespace MyMVCBookStore.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName,LastName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
             return View(book);
         }
@@ -106,9 +90,11 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
+            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var result = service.EditDetalisDelObject(book);
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return View(book);
+            return View(result);
         }
 
         // POST: Books/Edit/5
@@ -141,7 +127,9 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
-            return View(book);
+            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var result = service.EditDetalisDelObject(book);
+            return View(result);
         }
 
         // POST: Books/Delete/5
