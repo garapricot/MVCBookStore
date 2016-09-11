@@ -1,12 +1,9 @@
-﻿using DAL.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using DAL.Entities;
 
-namespace MyMVCBookStore.Models
+namespace DAL.ViewModel
 {
     public class BookViewModel
     {
@@ -19,9 +16,9 @@ namespace MyMVCBookStore.Models
         public string Title { get; set; }
         [Required]
         public decimal Price { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DisplayName("Published Day")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Required]
         public DateTime? PublishedDay { get; set; }
         public string Description { get; set; }
         public int PageCount { get; set; }

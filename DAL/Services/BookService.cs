@@ -1,6 +1,6 @@
 ﻿using DAL.Context;
 using DAL.Entities;
-using DAL.Models;
+using DAL.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace DAL.Services
             List<BookViewModel> result = new List<BookViewModel>();
             foreach (var item in books)
             {
-                result.Add(new BookViewModel
+                result.Add(new BookViewModel()
                 {
                     Id = item.Id,
                     Title = item.Title,
@@ -37,7 +37,7 @@ namespace DAL.Services
         }
         public BookViewModel EditDetalisDelObject(Book book)
         {
-            var result = new BookViewModel
+            var result = new BookViewModel()
             {
                 Id = book.Id,
                 Title = book.Title,

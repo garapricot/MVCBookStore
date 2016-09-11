@@ -18,7 +18,6 @@ namespace DAL.Entities
         [Required]
         public string LastName { get; set; }        
         [DisplayName("Birth Day")]
-        [DataType(DataType.Date)]
         [Required]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? BirthDay { get; set; }
