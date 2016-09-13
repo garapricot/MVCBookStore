@@ -17,23 +17,7 @@ namespace DAL.Services
         public List<BookViewModel> CreateBook()
         {
             var books = db.Books.ToList();
-            List<BookViewModel> result = new List<BookViewModel>();
-            foreach (var item in books)
-            {
-                result.Add(new BookViewModel()
-                {
-                    Id = item.Id,
-                    Title = item.Title,
-                    PageCount = item.PageCount,
-                    Description = item.Description,
-                    PublishedDay = item.PublishedDay,
-                    Author = item.Author,
-                    Image = item.Image,
-                    Price = item.Price + item.Country.CountryCode,
-                    Country = item.Country
-                });
-            }
-            return result;
+            return GetBookResult(books);
         }
         public BookViewModel EditDetalisDelObject(Book book)
         {
@@ -49,6 +33,50 @@ namespace DAL.Services
                 Price = book.Price,
                 Country = book.Country
             };
+            return result;
+        }
+        public List<BookViewModel> Search(string searchString, string authorSearch)
+        {
+            var books = new List<Book>();
+            if (!string.IsNullOrEmpty(searchString) && !string.IsNullOrEmpty(authorSearch))
+            {
+                books.AddRange(db.Books.Where(x => x.Title == searchString));
+                books.AddRange(db.Books.Where(x => x.Author.FirstName == authorSearch));
+                books.AddRange(db.Books.Where(x => x.Author.LastName == authorSearch));
+                books.AddRange(db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == authorSearch));
+                books.AddRange(db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == authorSearch));
+            }
+            else if (string.IsNullOrEmpty(searchString) && !string.IsNullOrEmpty(authorSearch))
+            {
+                books.AddRange(db.Books.Where(x => x.Author.FirstName == authorSearch));
+                books.AddRange(db.Books.Where(x => x.Author.LastName == authorSearch));
+                books.AddRange(db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == authorSearch));
+                books.AddRange(db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == authorSearch));
+            }
+            else if (!string.IsNullOrEmpty(searchString) && string.IsNullOrEmpty(authorSearch))
+            {
+                books.AddRange(db.Books.Where(x => x.Title == searchString));
+            }
+            return GetBookResult(books);
+        }
+        public List<BookViewModel> GetBookResult(IEnumerable<Book> books)
+        {
+            var result = new List<BookViewModel>();
+            foreach (var item in books)
+            {
+                result.Add(new BookViewModel
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    PageCount = item.PageCount,
+                    Description = item.Description,
+                    PublishedDay = item.PublishedDay,
+                    Author = item.Author,
+                    Image = item.Image,
+                    Price = item.Price + item.Country.CountryCode,
+                    Country = item.Country
+                });
+            }
             return result;
         }
         public void Dispose()

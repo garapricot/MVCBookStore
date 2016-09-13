@@ -23,6 +23,13 @@ namespace DAL.Entities
         public DateTime? BirthDay { get; set; }
         [Column(TypeName = "varchar(MAX)")]
         public string Bio { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return LastName + "  " + FirstName;
+            }
+        }
     }  
 
 }

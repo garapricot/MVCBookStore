@@ -31,4 +31,6 @@ namespace DAL.Entities
         public virtual Author Author { get; set; }
         public virtual Country Country { get; set; }
     }
+
+
 }

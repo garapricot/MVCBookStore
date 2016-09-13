@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using DAL.Entities;
+using System.Collections.Generic;
 
 namespace DAL.ViewModel
 {
@@ -26,5 +27,6 @@ namespace DAL.ViewModel
         public Author Author { get; set; }
         public Country Country { get; set; }
 
+       
     }
 }
