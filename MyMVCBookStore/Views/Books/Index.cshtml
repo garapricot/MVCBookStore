@@ -35,7 +35,7 @@
     columns.Add(book => book.Price).Sortable(true).Titled("Price").Filterable(true);
     columns.Add(book => book.Description).Titled("Description");
     columns.Add(book => book.PageCount).Sortable(true).Titled("Page Count").Filterable(true);
-    columns.Add(book => book.PublishedDay).Sortable(true).Titled("Published Day").Filterable(true);
+    columns.Add(book => book.PublishedDay).Format("{0:dd/MM/yyyy}").Sortable(true).Titled("Published Day").Filterable(true);
     columns.Add().Titled("Book Image")
     .Encoded(false)
     .Sanitized(false)
@@ -54,7 +54,7 @@
         .Encoded(false)
         .Sanitized(false)
         .RenderValueAs(d => @<b>
-                                @Html.ActionLink("Delete", "Delete", new {id = d.Id})
+                                @Html.ActionLink("Details", "Details", new {id = d.Id})
                             </b>);
     columns.Add()
         .Encoded(false)

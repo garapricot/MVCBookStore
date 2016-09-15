@@ -9,10 +9,8 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class Book
-    {
-        [Key]
-        public int Id { get; set; }
+    public class Book:BaseEntity
+    {       
         [Required]
         [ForeignKey(nameof(Country))]
         public int CountryId { get; set; }
@@ -23,8 +21,7 @@ namespace DAL.Entities
         public string Title { get; set; }
         [Required]
         public decimal Price { get; set; }
-        [Required]
-        public DateTime? PublishedDay { get; set; }
+        public DateTime PublishedDay { get; set; }
         public string Description { get; set; }
         public int PageCount { get; set; }
         public byte[] Image { get; set; }

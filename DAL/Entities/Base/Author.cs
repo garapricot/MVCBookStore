@@ -8,28 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Entities
-{
-   public class Author
+{   
+    public partial class Author : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }       
         [Required]
         public string FirstName { get; set; }
         [Required]
-        public string LastName { get; set; }        
+        public string LastName { get; set; }
         [DisplayName("Birth Day")]
         [Required]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? BirthDay { get; set; }
         [Column(TypeName = "varchar(MAX)")]
         public string Bio { get; set; }
-        public string FullName
-        {
-            get
-            {
-                return LastName + "  " + FirstName;
-            }
-        }
-    }  
+    }
 
 }

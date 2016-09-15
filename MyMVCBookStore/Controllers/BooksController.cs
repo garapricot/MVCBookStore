@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Net;
 using System.Web;
@@ -11,8 +7,6 @@ using DAL.Context;
 using DAL.Entities;
 using DAL.Services;
 using Microsoft.AspNet.Identity.Owin;
-using DAL.Models;
-using DAL.ViewModel;
 
 namespace MyMVCBookStore.Controllers
 {
@@ -80,6 +74,8 @@ namespace MyMVCBookStore.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName", book.AuthorId);
+            ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
             return View();
         }
 
