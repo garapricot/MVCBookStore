@@ -28,7 +28,7 @@ namespace MyMVCBookStore.Controllers
             return View(result);
         }
 
-        public ActionResult Search(string searchString, string authorSearch)
+        public ActionResult Search(string searchString)
         {
             var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.Search(searchString);
