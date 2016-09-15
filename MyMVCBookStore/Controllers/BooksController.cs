@@ -31,7 +31,7 @@ namespace MyMVCBookStore.Controllers
         public ActionResult Search(string searchString, string authorSearch)
         {
             var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.Search(searchString, authorSearch);
+            var result = service.Search(searchString);
 
             return View("Index", result);
         }
@@ -80,9 +80,7 @@ namespace MyMVCBookStore.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
-            ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return View(book);
+            return View();
         }
 
         // GET: Books/Edit/5
@@ -100,7 +98,7 @@ namespace MyMVCBookStore.Controllers
             }
             var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.EditDetalisDelObject(book);
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
+            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
             return View(result);
         }
@@ -121,6 +119,10 @@ namespace MyMVCBookStore.Controllers
                 }
                 db.Books.Attach(book);
                 db.Entry(book).State = EntityState.Modified;
+                if (upimage == null)
+                {
+                    db.Entry(book).Property(m => m.Image).IsModified = false;
+                }
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

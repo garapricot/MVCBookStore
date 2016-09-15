@@ -35,27 +35,17 @@ namespace DAL.Services
             };
             return result;
         }
-        public List<BookViewModel> Search(string searchString, string authorSearch)
+        public List<BookViewModel> Search(string searchString)
         {
             var books = new List<Book>();
-            if (!string.IsNullOrEmpty(searchString) && !string.IsNullOrEmpty(authorSearch))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 books.AddRange(db.Books.Where(x => x.Title == searchString));
-                books.AddRange(db.Books.Where(x => x.Author.FirstName == authorSearch));
-                books.AddRange(db.Books.Where(x => x.Author.LastName == authorSearch));
-                books.AddRange(db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == authorSearch));
-                books.AddRange(db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == authorSearch));
-            }
-            else if (string.IsNullOrEmpty(searchString) && !string.IsNullOrEmpty(authorSearch))
-            {
-                books.AddRange(db.Books.Where(x => x.Author.FirstName == authorSearch));
-                books.AddRange(db.Books.Where(x => x.Author.LastName == authorSearch));
-                books.AddRange(db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == authorSearch));
-                books.AddRange(db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == authorSearch));
-            }
-            else if (!string.IsNullOrEmpty(searchString) && string.IsNullOrEmpty(authorSearch))
-            {
-                books.AddRange(db.Books.Where(x => x.Title == searchString));
+                books.AddRange(db.Books.Where(x => x.Author.FirstName == searchString));
+                books.AddRange(db.Books.Where(x => x.Author.LastName == searchString));
+                books.AddRange(db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == searchString));
+                books.AddRange(db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == searchString));
+                books.AddRange(db.Books.Where(x => x.Country.Name == searchString));
             }
             return GetBookResult(books);
         }

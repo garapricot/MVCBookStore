@@ -1,95 +1,71 @@
 ﻿@model IEnumerable<DAL.ViewModel.BookViewModel>
-
+@using System.Activities.Statements
+@using GridMvc.Html
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Scripts/gridmvc.min.js")" type="text/javascript"> </script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Book";
 }
 
-<h2>Index</h2>
+<h2>Book</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 
 
-   @using (Html.BeginForm("Index", "Books/Search", FormMethod.Get))
-   {
-    @Html.TextBox("SearchString")
-    @Html.TextBox("authorSearch")
-        <input type="submit" value="Filter" />
-   }
+    @using (Html.BeginForm("Index", "Books/Search", FormMethod.Get))
+    {
+        @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    }
 
-    </p>
-       
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Author.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Country.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PublishedDay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PageCount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Image)
-                </th>
-                <th></th>
-            </tr>
+</p>
+<p>All Books</p>
 
-            @foreach (var item in Model)
+@Html.Grid(Model).Columns(columns =>
+{
+
+    columns.Add(book => book.Id).Titled("N").Sortable(true);
+    columns.Add(book => book.Author.FullName).Sortable(true).Titled("Author").Filterable(true);
+    columns.Add(book => book.Country.Name).Sortable(true).Titled("Published Country").Filterable(true);
+    columns.Add(book => book.Title).Sortable(true).Titled("Book Title").Filterable(true);
+    columns.Add(book => book.Price).Sortable(true).Titled("Price").Filterable(true);
+    columns.Add(book => book.Description).Titled("Description");
+    columns.Add(book => book.PageCount).Sortable(true).Titled("Page Count").Filterable(true);
+    columns.Add(book => book.PublishedDay).Sortable(true).Titled("Published Day").Filterable(true);
+    columns.Add().Titled("Book Image")
+    .Encoded(false)
+    .Sanitized(false)
+    .RenderValueAs(d => @<div>
+        @{
+            if (d.Image != null)
             {
-
-                <tr>
-                    
-                    
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Author.FirstName) @Html.DisplayFor(modelItem => item.Author.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Country.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PublishedDay)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PageCount)
-                    </td>
-                    <td>
-                        @if (item.Image != null)
-                {
-                    var base64 = Convert.ToBase64String(item.Image);
-                    var imgsrc = $"data:image/jpg;base64,{base64}";
-                            <img src="@imgsrc" style="max-height:100px;max-width:100px" />
-                        }
-
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
-                </tr>
+                var base64 = Convert.ToBase64String(d.Image);
+                var imgsrc = String.Format((string)"data:image/jpg;base64,{0}", (object)base64);
+                <img src="@imgsrc" style="max-height: 100px; max-width: 100px" />;
             }
-
-        </table>
+        }
+    </div>
+    );
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .RenderValueAs(d => @<b>
+                                @Html.ActionLink("Delete", "Delete", new {id = d.Id})
+                            </b>);
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .RenderValueAs(d => @<b>
+                                @Html.ActionLink("Edit", "Edit", new {id = d.Id})
+                            </b>);
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .RenderValueAs(d => @<b>
+                                @Html.ActionLink("Delete", "Delete", new {id = d.Id})
+                            </b>);
+}).WithPaging(4)
