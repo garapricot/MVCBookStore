@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace DAL.Services
 {
-    public class ViewModelService : IDisposable
+    public class BookService : IDisposable
     {
         private ApplicationDbContext db;
-        public ViewModelService(ApplicationDbContext dbContext)
+        public BookService(ApplicationDbContext dbContext)
         {
             db = dbContext;
         }

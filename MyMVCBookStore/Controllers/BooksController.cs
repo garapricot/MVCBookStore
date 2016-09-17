@@ -17,14 +17,14 @@ namespace MyMVCBookStore.Controllers
         // GET: Books
         public ActionResult Index()
         {
-            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.CreateBook();
             return View(result);
         }
 
         public ActionResult Search(string searchString)
         {
-            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.Search(searchString);
 
             return View("Index", result);
@@ -41,7 +41,7 @@ namespace MyMVCBookStore.Controllers
             {
                 return Content("Siktir");
             }
-            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.EditDetalisDelObject(book);
             return View(result);
         }
@@ -92,7 +92,7 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
-            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.EditDetalisDelObject(book);
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
@@ -139,7 +139,7 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
-            var service = new ViewModelService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.EditDetalisDelObject(book);
             return View(result);
         }
