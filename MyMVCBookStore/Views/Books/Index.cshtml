@@ -1,87 +1,290 @@
-﻿@model IEnumerable<DAL.ViewModel.BookViewModel>
-@{
-    ViewBag.Title = "Book";
-}
-<p>
-    @using (Html.BeginForm("Index", "Books/Search", FormMethod.Get))
-
-    {
-        @Html.TextBox("SearchString")
-        <input type="submit" value="Search"/>
+﻿@*@model IEnumerable<DAL.ViewModel.BookViewModel>
+    @{
+        ViewBag.Title = "Book";
     }
-</p>
+    <p>
+        @using (Html.BeginForm("Index", "Books/Search", FormMethod.Get))
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Author.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Country.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PublishedDay)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PageCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Image)
-        </th>
-        <th></th>
-    </tr>
+        {
+            @Html.TextBox("SearchString")
+            <input type="submit" value="Search"/>
+        }
+    </p>
 
-    @foreach (var item in Model)
-    {
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author.FirstName) @Html.DisplayFor(modelItem => item.Author.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishedDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PageCount)
-            </td>
-            <td>
-                @if (item.Image != null)
-                {
-                    var base64 = Convert.ToBase64String(item.Image);
-                    var imgsrc = $"data:image/jpg;base64,{base64}";
-                    <img src="@imgsrc" style="max-height:100px;max-width:100px" />
+            <th>
+                @Html.DisplayNameFor(model => model.Author.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublishedDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PageCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.FirstName) @Html.DisplayFor(modelItem => item.Author.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishedDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PageCount)
+                </td>
+                <td>
+                    @if (item.Image != null)
+                    {
+                        var base64 = Convert.ToBase64String(item.Image);
+                        var imgsrc = $"data:image/jpg;base64,{base64}";
+                        <img src="@imgsrc" style="max-height:100px;max-width:100px" />
+                    }
+
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>*@
+@model IEnumerable<DAL.ViewModel.BookViewModel>
+
+@{
+    ViewBag.Title = "Book List";
+}
+
+<h2>Book Catalogue</h2>
+        <p>
+            Search: <input id="SearchString" name="SearchString" type="text" value="" />
+            <input type="button" value="Search" id="btnSearch" />
+        </p>
+        <div id="BookList">
+            @Html.Partial("BookList", Model)
+        </div>
+
+        @section scripts
+{
+
+            <script type="text/javascript">
+                // Adding popstate event listener to handle browser back button
+                window.addEventListener("popstate", function (e) {
+                    $.ajax({
+                        url: location.href,
+                        success: function (result) {
+                            $('#BookList').html(result);
+                        }
+                    });
+                });
+
+                function ChangeUrl(page, url) {
+                    if (typeof (history.pushState) != "undefined") {
+                        var obj = { Page: page, Url: url };
+                        history.pushState(null, obj.Page, obj.Url);
+                    } else {
+                        alert("Browser does not support HTML5.");
+                    }
                 }
 
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
+                function getUrlVars() {
+                    var vars = [], hash;
+                    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                    for (var i = 0; i < hashes.length; i++) {
+                        hash = hashes[i].split('=');
+                        vars.push(hash[0]);
+                        vars[hash[0]] = hash[1];
+                    }
+                    return vars;
+                }
 
-</table>
+                function search() {
+                    $.ajax({
+                        url: "/Books/Index?searchString=" + $('#SearchString').val(),
+                        success: function (result) {
+                            ChangeUrl("index", "/Books/Index?searchString=" + $('#SearchString').val());
+                            $('#BookList').html(result);
+                        }
+                    });
+                }
+
+                $(function () {
+                    $("#btnSearch").click(function () {
+                        search();
+                    });
+
+                    $("#SearchString").keypress(function (e) {
+                        if (e.keyCode == 13) {
+                            search();
+                        }
+                    });
+                    $('body').on('click', '#BookList .pagination a', function (event) {
+                        event.preventDefault();
+                        console.log('page');
+                        var searchString = $('#SearchString').val();
+                        if (searchString == undefined || searchString == '') {
+                            searchString = '';
+                        } else {
+                            searchString = '&searchString=' + searchString;
+                        }
+                        var url = $(this).attr('href') + searchString;
+                        console.log(url);
+                        $.ajax({
+                            url: url,
+                            success: function (result) {
+                                ChangeUrl('index', url);
+                                $('#BookList').html(result);
+                            }
+                        });
+                    });
+
+
+                    $('body').on('click', '#BookList .table a', function (event) {
+
+                        event.preventDefault();
+
+                        var searchString = $('#SearchString').val();
+                        if (searchString == undefined || searchString == '') {
+                            searchString = '';
+                        } else {
+                            searchString = '&searchString=' + searchString;
+                        }
+
+                        var columnToSort = $(this).text();
+                        var currentSortOption = getUrlVars()['sortOption'];
+                        console.log(currentSortOption);
+                        var sort;
+                        switch (currentSortOption) {
+                            case "name_acs":
+                                sort = 'sortOption=name_desc';
+                                break;
+                            case "name_desc":
+                                sort = 'sortOption=name_acs';
+                                break;
+                            case "country_acs":
+                                sort = 'sortOption=country_desc';
+                                break;
+                            case "country_desc":
+                                sort = 'sortOption=country_acs';
+                                break;
+                            case "title_acs":
+                                sort = 'sortOption=title_desc';
+                                break;
+                            case "title_desc":
+                                sort = 'sortOption=title_acs';
+                                break;
+                            case "price_acs":
+                                sort = 'sortOption=price_desc';
+                                break;
+                            case "price_desc":
+                                sort = 'sortOption=price_acs';
+                                break;
+                                case "date_acs":
+                                    sort = 'sortOption=date_desc';
+                                    break;
+                                case "date_desc":
+                                    sort = 'sortOption=date_acs';
+                                    break;
+                            case "page_acs":
+                                sort = 'sortOption=page_desc';
+                                break;
+                            case "page_desc":
+                                sort = 'sortOption=page_acs';
+                                break;
+                            default:
+                                sort = '';
+                                break;
+                        }
+
+
+                        switch (columnToSort) {
+                            case 'Author':
+                                if (currentSortOption != 'name_acs' && currentSortOption != 'name_desc') {
+                                    sort = 'sortOption=name_acs';
+                                }
+                                break;
+                            case 'Published Country':
+                                if (currentSortOption != 'country_acs' && currentSortOption != 'country_desc') {
+                                    sort = 'sortOption=country_acs';
+                                }
+                                break;
+                            case 'Title':
+                                if (currentSortOption != 'title_acs' && currentSortOption != 'title_desc') {
+                                    sort = 'sortOption=title_acs';
+                                }
+                                break;
+                            case 'Price':
+                                if (currentSortOption != 'price_acs' && currentSortOption != 'price_desc') {
+                                    sort = 'sortOption=price_acs';
+                                }
+                                break;
+                                case 'Published Day':
+                                    if (currentSortOption != 'date_acs' && currentSortOption != 'date_desc') {
+                                        sort = 'sortOption=date_acs';
+                                    }
+                                    break;
+                            case 'Pages':
+                                if (currentSortOption != 'page_acs' && currentSortOption != 'page_decs') {
+                                    sort = 'sortOption=page_acs';
+                                }
+                                break;
+                            default:
+                                sort = '';
+                                break;
+
+                        }
+                        if (sort != '' & searchString != '') {
+                            sort = '&' + sort;
+                        }
+                        var url = '/Books/Index?' + searchString + sort;
+                        $.ajax({
+                            url: url,
+                            success: function (result) {
+                                ChangeUrl('index', url);
+                                $('#BookList').html(result);
+                            }
+                        });
+                    });
+
+                });
+
+            </script>
+
+
+        }

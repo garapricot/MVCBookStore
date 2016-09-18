@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Web;
@@ -7,6 +9,7 @@ using DAL.Context;
 using DAL.Entities;
 using DAL.Services;
 using Microsoft.AspNet.Identity.Owin;
+using PagedList;
 
 namespace MyMVCBookStore.Controllers
 {
@@ -15,20 +18,71 @@ namespace MyMVCBookStore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index()
+        public ActionResult Index(string searchString, string sortOption, int page = 1)
         {
+            int pageSize = 5;
             var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.CreateBook();
-            return View(result);
-        }
+            var result = service.CreateBook().AsQueryable();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = service.Search(searchString).AsQueryable();
+            }
+            switch (sortOption)
+            {
+                case "name_acs":
+                    result = result.OrderBy(p => p.Author.FirstName);
+                    break;
+                case "name_desc":
+                    result = result.OrderByDescending(p => p.Author.FirstName);
+                    break;
+                case "country_acs":
+                    result = result.OrderBy(p => p.Country.Name);
+                    break;
+                case "country_desc":
+                    result = result.OrderByDescending(p => p.Country.Name);
+                    break;
+                case "title_acs":
+                    result = result.OrderBy(p => p.Title);
+                    break;
+                case "title_desc":
+                    result = result.OrderByDescending(p => p.Title);
+                    break;
+                case "price_acs":
+                    result = result.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    result = result.OrderByDescending(p => p.Price);
+                    break;
+                case "date_acs":
+                    result = result.OrderBy(p => p.PublishedDay);
+                    break;
+                case "date_desc":
+                    result = result.OrderByDescending(p => p.PublishedDay);
+                    break;
+                case "page_acs":
+                    result = result.OrderBy(p => p.PageCount);
+                    break;
+                case "page_desc":
+                    result = result.OrderByDescending(p => p.PageCount);
+                    break;
+                default:
+                    result = result.OrderBy(p => p.Id);
+                    break;
 
-        public ActionResult Search(string searchString)
-        {
-            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.Search(searchString);
-
-            return View("Index", result);
+            }
+            return Request.IsAjaxRequest()
+                ? (ActionResult)PartialView("BookList", result.ToPagedList(page, pageSize))
+                : View(result.ToPagedList(page, pageSize));
         }
+           
+
+        //public ActionResult Search(string searchString)
+        //{
+        //    var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
+        //    var result = service.Search(searchString);
+
+        //    return View("Index", result);
+        //}
         // GET: Books/Details/5
         public async Task<ActionResult> Details(int? id)
         {
