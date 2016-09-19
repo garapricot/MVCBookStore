@@ -1,25 +1,27 @@
-﻿@using PagedList.Mvc
+﻿
+@using PagedList.Mvc
 @model PagedList.IPagedList<DAL.ViewModel.BookViewModel>
 <table class="table">
     <tr>
-        <th>
+        <th class="sortTable">
             @Html.ActionLink("Author", "Index")
         </th>
-        <th>
+        <th class="sortTable">
             @Html.ActionLink("Published Country", "Index")
-        <th>
+        </th>
+        <th class="sortTable">
             @Html.ActionLink("Title", "Index")
         </th>
-        <th>
+        <th class="sortTable">
             @Html.ActionLink("Price", "Index")
         </th>
-        <th>
+        <th class="sortTable">
             @Html.ActionLink("Published Day", "Index")
         </th>
         <th>
             @Html.ActionLink("Description", "Index")
         </th>
-        <th>
+        <th class="sortTable">
             @Html.ActionLink("Pages", "Index")
         </th>
         <th>
