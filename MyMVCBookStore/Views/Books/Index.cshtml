@@ -7,43 +7,57 @@
 <script src="~/Scripts/bootstrap.min.js"></script>
 <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
 @{
-    ViewBag.Title = "Book";
+    ViewBag.Title = "Index";
 }
-<h2>Index</h2>
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="newBtn">
-    Add Book
-</button>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <div id='myModalContent'></div>
         </div>
     </div>
 </div>
-@Html.AntiForgeryToken()
-<p>
-    @*@Html.ActionLink("Create New", "Create")*@
+
+<div >
+    <div>People</div>
+
+    <div>
+        @Html.ActionLink("Create", "Create", null, new { data_modal = "", id = "btnCreate", @class = "btn btn-small btn-primary pull-Left" })
+    </div>
+
+    @*<table class="table table-bordered table-hover">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:20px">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Details", "Details", new { id = item.Id }, new { data_modal = "" })</li>
+                            <li>@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { data_modal = "" })</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { data_modal = "" })</li>
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.Name)  @Html.DisplayFor(modelItem => item.Author.FullName)
+                    <div class="text-muted">
+                        <small>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </small>
+                    </div>
+                </td>
+
+            </tr>
+        }
+    </table>*@
 
    
-    @using (Html.BeginForm("Index", "Books/Search", FormMethod.Get))
-    {
-        @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
-    }
-
-</p>
-<p>All Books</p>
-
+</div>
 @Html.Grid(Model).Columns(columns =>
 {
 
@@ -72,84 +86,20 @@
     columns.Add()
         .Encoded(false)
         .Sanitized(false)
-        .RenderValueAs(d => @<b>
-            @Html.ActionLink("Details", "Details", new { id = d.Id })
-        </b>);
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .RenderValueAs(d => @<b>
-            @Html.ActionLink("Edit", "Edit", new { id = d.Id })
-        </b>);
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .RenderValueAs(d => @<div class="delete-section">
-                                 <a class="glyphicon glyphicon-remove vle"  href="@Url.Action("Delete", new {id = d.Id})"></a>
-                                 <div class="btn btn-primary delete-confirm" style="display:none" data-delete-id="@d.Id">Confirm Delete</div>
-        </div>);
+        .RenderValueAs(d => @<td style="width:20px">
+    <div class="btn-group">       
+        <ul>
+            <li>@Html.ActionLink("Details", "Details", new { id = d.Id }, new { data_modal = "" })</li>
+            <li>@Html.ActionLink("Edit", "Edit", new { id = d.Id }, new { data_modal = "" })</li>
+            <li class="divider"></li>
+            <li>@Html.ActionLink("Delete", "Delete", new { id = d.Id }, new { data_modal = "" })</li>
+        </ul>
+    </div>
+</td>);
+    
 }).WithPaging(4)
-@section scripts{
-<script src="~/Scripts/BookScript/Crud.js"></script>
-    <script type="text/javascript">
-    $(function () {
-        $("a.vle").click(function () {
-            var deleteLink = $(this);
-            deleteLink.hide();
-            var confirmButton = deleteLink.siblings(".delete-confirm");
-            confirmButton.show();
 
-            var cancelDelete =  function () {
-                removeEvents();
-                showDeleteLink();
-            };
-
-            var deleteItem = function () {
-                removeEvents();
-                confirmButton.hide();
-                $.post(
-                    '@Url.Action("Delete")',
-                    AddAntiForgeryToken({ id: confirmButton.attr('data-delete-id') }))
-                   .done(function () {
-                       var parentRow = deleteLink.parents("tr:first");
-                       parentRow.fadeOut('fast', function () {
-                           parentRow.remove();
-                       });
-                   }).fail(function (data) {
-                       alert("error");
-                   });
-                return false;
-            };
-
-            var removeEvents = function () {
-                confirmButton.off("click", deleteItem);
-                $(document).on("click", cancelDelete);
-                $(document).off("keypress", onKeyPress);
-            };
-
-            var showDeleteLink = function () {
-                confirmButton.hide();
-                deleteLink.show();
-            };
-
-            var onKeyPress = function (e) {
-                //Cancel if escape key pressed
-                if (e.which == 27) {
-                    cancelDelete();
-                }
-            };
-
-            confirmButton.on("click", deleteItem);
-            $(document).on("click", cancelDelete);
-            $(document).on("keypress", onKeyPress);
-
-            return false;
-        });
-
-        AddAntiForgeryToken = function (data) {
-            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
-            return data;
-        };
-    });
-    </script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modalform")
 }

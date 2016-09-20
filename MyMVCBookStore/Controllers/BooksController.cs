@@ -51,7 +51,7 @@ namespace MyMVCBookStore.Controllers
         {
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName");
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name");
-            return View();
+            return PartialView("_Create");
         }
 
         // POST: Books/Create
@@ -72,11 +72,11 @@ namespace MyMVCBookStore.Controllers
                 }
                 db.Books.Add(book);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return View();
+            return PartialView("_Create", book);
         }
 
         // GET: Books/Edit/5
@@ -96,7 +96,7 @@ namespace MyMVCBookStore.Controllers
             var result = service.EditDetalisDelObject(book);
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return View(result);
+            return PartialView("_Edit",book);
         }
 
         // POST: Books/Edit/5
@@ -120,11 +120,12 @@ namespace MyMVCBookStore.Controllers
                     db.Entry(book).Property(m => m.Image).IsModified = false;
                 }
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Json(new { success = true });
+                
             }
             ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
             ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return View(book);
+            return PartialView("_Edit",book);
         }
 
         // GET: Books/Delete/5
@@ -141,7 +142,7 @@ namespace MyMVCBookStore.Controllers
             }
             var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.EditDetalisDelObject(book);
-            return View(result);
+            return PartialView("_Delete",book);
         }
 
         // POST: Books/Delete/5
@@ -152,7 +153,7 @@ namespace MyMVCBookStore.Controllers
             Book book = await db.Books.FindAsync(id);
             db.Books.Remove(book);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return Json(new { success = true });
         }
 
         protected override void Dispose(bool disposing)
