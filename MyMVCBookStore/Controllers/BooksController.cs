@@ -43,7 +43,7 @@ namespace MyMVCBookStore.Controllers
             }
             var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
             var result = service.EditDetalisDelObject(book);
-            return View(result);
+            return PartialView("_Details", book);
         }
 
         // GET: Books/Create

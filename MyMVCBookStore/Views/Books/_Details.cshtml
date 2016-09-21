@@ -2,14 +2,12 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">Person Details</h4>
+    <h4 class="modal-title" id="myModalLabel">Book Info</h4>
 </div>
 <div clas="modal-body">
-    <h4>Book</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Author.FirstName) 
+            @Html.DisplayNameFor(model => model.Author.FirstName)
         </dt>
 
         <dd>
@@ -37,10 +35,10 @@
         </dt>
 
         <dd>
-           @{
-               var Price = Model.Price + Model.Country.CountryCode;
+            @{
+                var price = Model.Price + Model.Country.CountryCode;
             }
-            @Price
+            @price
         </dd>
 
         <dt>
@@ -82,9 +80,6 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id })   
-</p>
 <div class="modal-footer">
     <button class="btn" data-dismiss="modal">Ok</button>
 </div>

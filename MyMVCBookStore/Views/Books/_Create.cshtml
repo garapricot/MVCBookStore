@@ -1,18 +1,16 @@
 ﻿@model DAL.Entities.Book
-
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">Add new Person</h4>
+    <h4 class="modal-title" id="myModalLabel">Add your book</h4>
 </div>
 
 
-<form method="post" class="form-horizontal" role="form" id="sendMail"
-      enctype="multipart/form-data" action="/Books/Create">
+@using (Html.BeginForm("Create", "Books", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
     @Html.AntiForgeryToken()
     <div class="modal-body">
         <div class="form-horizontal">
-            <h4>BookViewModel</h4>
-            <hr />
+
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
                 @Html.LabelFor(model => model.CountryId, "CountryId", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -23,7 +21,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.AuthorId, "AuthorId", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.AuthorId, "AuthorId", htmlAttributes: new { @class = "control-label col-md-2"})
                 <div class="col-md-10">
                     @Html.DropDownList("AuthorId", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.AuthorId, "", new { @class = "text-danger" })
@@ -77,17 +75,11 @@
                     @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
         </div>
     </div>
-
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal">Cancel</button>
-        <input class="btn btn-primary" type="submit" value="Save" />
+            <input class="btn-danger" type="submit" value="Save" />
     </div>
-   </form>
+}
 

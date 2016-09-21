@@ -3,42 +3,34 @@
     $.ajaxSetup({ cache: false });
 
     $("a[data-modal]").on("click", function (e) {
-
-        // hide dropdown if any
-      
-
-        
-        $('#myModalContent').load(this.href, function () {
+        $("#myModalContent").load(this.href, function () {
             
 
-            $('#myModal').modal({
-                /*backdrop: 'static',*/
+            $("#myModal").modal({
                 keyboard: true
-            }, 'show');
+            }, "show");
 
             bindForm(this);
         });
 
         return false;
     });
-
-
 });
 
 function bindForm(dialog) {
     
-    $('form', dialog).submit(function () {
+    $("form", dialog).submit(function () {
+        var self = $(this);
         $.ajax({
             url: this.action,
             type: this.method,
-            data: $(this).serialize(),
+            data: self.serialize(),
             success: function (result) {
                 if (result.success) {
-                    $('#myModal').modal('hide');
-                    //Refresh
+                    $("#myModal").modal("hide");
                     location.reload();
                 } else {
-                    $('#myModalContent').html(result);
+                    $("#myModalContent").html(result);
                     bindForm();
                 }
             }
