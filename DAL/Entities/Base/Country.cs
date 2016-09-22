@@ -13,5 +13,4 @@ namespace DAL.Entities
         public int CountryCode { get; set; }
         public string Name { get; set; }
     }   
-
 }

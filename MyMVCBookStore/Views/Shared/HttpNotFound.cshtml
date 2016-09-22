@@ -1,0 +1,26 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+    @Styles.Render("~/Content/httpnotfoundstyle");
+</head>
+
+<body>
+	<div class="tail-left"></div>
+	<div id="main">
+		<div id="header">
+			<h1>Nothing alive here!<span><strong></strong> @ViewBag.statuscode</span></h1>
+		</div>
+		<div id="content">
+			<ul class="nav">
+         	<li class="home">@Html.ActionLink("Home","Index","Home")</li>                     
+         </ul>         
+		</div>
+	</div>
+</body>
+</html>

@@ -224,11 +224,15 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\httpnotfoundstyle.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Resource\HttpNotFound\main-bg.jpg" />
+    <Content Include="Resource\HttpNotFound\tail-left.gif" />
+    <Content Include="Resource\HttpNotFound\tail-top.gif" />
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -252,6 +256,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Views\Shared\HttpNotFound.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
