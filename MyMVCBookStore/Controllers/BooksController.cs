@@ -1,56 +1,75 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using DAL.Context;
 using DAL.Entities;
 using DAL.Services;
+using DAL.ViewModel;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace MyMVCBookStore.Controllers
 {
     public class BooksController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
+        private readonly BookService _service = new BookService();
         // GET: Books
         public ActionResult Index()
         {
-            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.CreateBook();
+            List<BookViewModel> result;
+            try
+            {
+                result = _service.GetAllBook();
+            }
+            catch 
+            {
+                return Content("Siktir");
+            }
             return View(result);
         }
 
         public ActionResult Search(string searchString)
         {
-            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.Search(searchString);
-
+            List<BookViewModel> result;
+            try
+            {
+                result = _service.GetSearchResult(searchString);
+            }
+            catch
+            {
+                return Content("Siktir");
+            }
             return View("Index", result);
         }
         // GET: Books/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            BookViewModel result;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var book = await db.Books.FindAsync(id);
-            if (book == null)
+            try
             {
-                return Content("Siktir");
+                result = await _service.GetBookById(id);
             }
-            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.EditDetalisDelObject(book);
-            return PartialView("_Details", book);
+            catch
+            {
+                return Content("siktir");
+            }
+            return PartialView("_Details", result);
         }
 
         // GET: Books/Create
         public ActionResult Create()
         {
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName");
-            ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name");
+            ViewBag.AuthorId = new SelectList(_db.Authors, "Id", "FullName");
+            ViewBag.CountryId = new SelectList(_db.Countires, "Id", "Name");
             return PartialView("_Create");
         }
 
@@ -59,24 +78,24 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book, HttpPostedFileBase upimage)
+        public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book, BookViewModel result, HttpPostedFileBase upimage)
         {
-
-
-            if (ModelState.IsValid)
+            try
             {
-                if (upimage != null)
+                if (ModelState.IsValid)
                 {
-                    book.Image = new byte[upimage.ContentLength];
-                    upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
+                    await _service.SaveCreatedBook(book, upimage);
+                    return Json(new { success = true });
                 }
-                db.Books.Add(book);
-                await db.SaveChangesAsync();
-                return Json(new { success = true });
+                ViewBag.AuthorId = new SelectList(_db.Authors, "Id", "FullName", book.AuthorId);
+                ViewBag.CountryId = new SelectList(_db.Countires, "Id", "Name", book.CountryId);
+
             }
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName", book.AuthorId);
-            ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return PartialView("_Create", book);
+            catch 
+            {
+                return Content("Siktir");
+            }
+            return PartialView("_Create", result);
         }
 
         // GET: Books/Edit/5
@@ -87,16 +106,14 @@ namespace MyMVCBookStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = await db.Books.FindAsync(id);
+            Book book = await _db.Books.FindAsync(id);
             if (book == null)
             {
                 return HttpNotFound();
             }
-            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.EditDetalisDelObject(book);
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FullName", book.AuthorId);
-            ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return PartialView("_Edit",book);
+            ViewBag.AuthorId = new SelectList(_db.Authors, "Id", "FullName", book.AuthorId);
+            ViewBag.CountryId = new SelectList(_db.Countires, "Id", "Name", book.CountryId);
+            return PartialView("_Edit", book);
         }
 
         // POST: Books/Edit/5
@@ -112,20 +129,21 @@ namespace MyMVCBookStore.Controllers
                 {
                     book.Image = new byte[upimage.ContentLength];
                     upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
+                    _db.Books.Attach(book);
+                    _db.Entry(book).State = EntityState.Modified;
                 }
-                db.Books.Attach(book);
-                db.Entry(book).State = EntityState.Modified;
-                if (upimage == null)
+                else
                 {
-                    db.Entry(book).Property(m => m.Image).IsModified = false;
+                    _db.Books.Attach(book);
+                    _db.Entry(book).Property(m => m.Image).IsModified = false;
                 }
-                await db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
                 return Json(new { success = true });
-                
+
             }
-            ViewBag.AuthorId = new SelectList(db.Authors, "Id", "FirstName", book.AuthorId);
-            ViewBag.CountryId = new SelectList(db.Countires, "Id", "Name", book.CountryId);
-            return PartialView("_Edit",book);
+            ViewBag.AuthorId = new SelectList(_db.Authors, "Id", "FirstName", book.AuthorId);
+            ViewBag.CountryId = new SelectList(_db.Countires, "Id", "Name", book.CountryId);
+            return PartialView("_Edit", book);
         }
 
         // GET: Books/Delete/5
@@ -135,14 +153,12 @@ namespace MyMVCBookStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = await db.Books.FindAsync(id);
+            Book book = await _db.Books.FindAsync(id);
             if (book == null)
             {
                 return HttpNotFound();
             }
-            var service = new BookService(HttpContext.GetOwinContext().Get<ApplicationDbContext>());
-            var result = service.EditDetalisDelObject(book);
-            return PartialView("_Delete",book);
+            return PartialView("_Delete", book);
         }
 
         // POST: Books/Delete/5
@@ -150,9 +166,9 @@ namespace MyMVCBookStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Book book = await db.Books.FindAsync(id);
-            db.Books.Remove(book);
-            await db.SaveChangesAsync();
+            Book book = await _db.Books.FindAsync(id);
+            _db.Books.Remove(book);
+            await _db.SaveChangesAsync();
             return Json(new { success = true });
         }
 
@@ -160,7 +176,7 @@ namespace MyMVCBookStore.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

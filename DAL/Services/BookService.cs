@@ -3,53 +3,19 @@ using DAL.Entities;
 using DAL.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.ModelBinding;
 
 namespace DAL.Services
 {
     public class BookService : IDisposable
     {
-        private ApplicationDbContext db;
-        public BookService(ApplicationDbContext dbContext)
-        {
-            db = dbContext;
-        }
-        public List<BookViewModel> CreateBook()
-        {
-            var books = db.Books.ToList();
-            return GetBookResult(books);
-        }
-        public BookViewModel EditDetalisDelObject(Book book)
-        {
-            var result = new BookViewModel()
-            {
-                Id = book.Id,
-                Title = book.Title,
-                PageCount = book.PageCount,
-                Description = book.Description,
-                PublishedDay = book.PublishedDay,
-                Author = book.Author,
-                Image = book.Image,
-                Price = book.Price,
-                Country = book.Country
-            };
-            return result;
-        }
-        public List<BookViewModel> Search(string searchString)
-        {
-            var books = new List<Book>();
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                books.AddRange(db.Books.Where(x => x.Title == searchString));
-                books.AddRange(db.Books.Where(x => x.Author.FirstName == searchString));
-                books.AddRange(db.Books.Where(x => x.Author.LastName == searchString));
-                books.AddRange(db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == searchString));
-                books.AddRange(db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == searchString));
-                books.AddRange(db.Books.Where(x => x.Country.Name == searchString));
-            }
-            return GetBookResult(books);
-        }
-        public List<BookViewModel> GetBookResult(IEnumerable<Book> books)
+        private readonly ApplicationDbContext _db=new ApplicationDbContext();
+        public List<BookViewModel> GetEnumerableBooks(IEnumerable<Book> books)
         {
             var result = new List<BookViewModel>();
             foreach (var item in books)
@@ -69,9 +35,62 @@ namespace DAL.Services
             }
             return result;
         }
+        public BookViewModel GetBooks(Book book)
+        {
+            var result = new BookViewModel()
+            {
+                Id = book.Id,
+                Title = book.Title,
+                PageCount = book.PageCount,
+                Description = book.Description,
+                PublishedDay = book.PublishedDay,
+                Author = book.Author,
+                Image = book.Image,
+                Price = book.Price,
+                Country = book.Country
+            };
+            return result;
+        }
+        public async Task<BookViewModel> GetBookById(int? id)
+        {
+            var  book = await _db.Books.FindAsync(id);
+            return GetBooks(book);
+        }
+        public async Task<BookViewModel> SaveCreatedBook(Book book, HttpPostedFileBase upimage)
+        {
+                if (upimage != null)
+                {
+                    book.Image = new byte[upimage.ContentLength];
+                    upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
+                }
+                _db.Books.Add(book);
+                await _db.SaveChangesAsync();
+            return GetBooks(book);
+        }
+        public List<BookViewModel> GetAllBook()
+        {
+            var books = _db.Books.ToList();
+            return GetEnumerableBooks(books);
+        }
+       
+        public List<BookViewModel> GetSearchResult(string searchString)
+        {
+            var books = new List<Book>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                books.AddRange(_db.Books.Where(x => x.Title == searchString));
+                books.AddRange(_db.Books.Where(x => x.Author.FirstName == searchString));
+                books.AddRange(_db.Books.Where(x => x.Author.LastName == searchString));
+                books.AddRange(_db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == searchString));
+                books.AddRange(_db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == searchString));
+                books.AddRange(_db.Books.Where(x => x.Country.Name == searchString));
+            }
+            return GetEnumerableBooks(books);
+        }
+      
         public void Dispose()
         {
-            db.Dispose();
+            _db.Dispose();
         }
     }
 }

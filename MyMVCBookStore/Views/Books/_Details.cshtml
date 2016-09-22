@@ -1,4 +1,4 @@
-﻿@model DAL.Entities.Book
+﻿@model DAL.ViewModel.BookViewModel
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -11,7 +11,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Author.FirstName) @Html.DisplayFor(model => model.Author.LastName)
+            @Html.DisplayFor(model => model.Author.FullName)
         </dd>
 
         <dt>
