@@ -19,12 +19,16 @@
 
 function bindForm(dialog) {
     
-    $("form", dialog).submit(function () {
-        var self = $(this);
-        $.ajax({
+    $("#crtForm", dialog).submit(function () {
+        var myform = document.getElementById("crtForm");
+        var fdata = new FormData(myform);
+       $.ajax({
             url: this.action,
-            type: this.method,
-            data: self.serialize(),
+            data: fdata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            type: "POST",
             success: function (result) {
                 if (result.success) {
                     $("#myModal").modal("hide");
