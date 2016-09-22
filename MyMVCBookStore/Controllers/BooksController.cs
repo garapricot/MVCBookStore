@@ -120,13 +120,14 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book,BookViewModel result, HttpPostedFileBase upimage)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book, HttpPostedFileBase upimage)
         {
+            BookViewModel result=null;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await _service.EditBook(book, upimage);
+                   result= await _service.EditBook(book, upimage);
                     return Json(new { success = true });
 
                 }

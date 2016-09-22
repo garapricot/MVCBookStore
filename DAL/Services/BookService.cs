@@ -14,7 +14,7 @@ namespace DAL.Services
 {
     public class BookService : IDisposable
     {
-        private readonly ApplicationDbContext _db=new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
         private bool disposed = false;
         public enum BookResult
         {
@@ -61,10 +61,10 @@ namespace DAL.Services
         public async Task<BookResult> GetStatusCode(int? id)
         {
             var book = await _db.Books.FindAsync(id);
-             if (id != null&& book!= null)
-                {
-                    return BookResult.Succeeded;
-                }
+            if (id != null && book != null)
+            {
+                return BookResult.Succeeded;
+            }
             else
             {
                 return BookResult.IdNotFound;
@@ -73,7 +73,7 @@ namespace DAL.Services
         }
         public async Task<BookViewModel> GetBookListById(int? id)
         {
-            Book book;           
+            Book book;
             if (id != null)
             {
                 book = await _db.Books.FindAsync(id);
@@ -87,13 +87,13 @@ namespace DAL.Services
         }
         public async Task<BookViewModel> SaveCreatedBook(Book book, HttpPostedFileBase upimage)
         {
-                if (upimage != null)
-                {
-                    book.Image = new byte[upimage.ContentLength];
-                    upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
-                }
-                _db.Books.Add(book);
-                await _db.SaveChangesAsync();
+            if (upimage != null)
+            {
+                book.Image = new byte[upimage.ContentLength];
+                upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
+            }
+            _db.Books.Add(book);
+            await _db.SaveChangesAsync();
             return GetBooks(book);
         }
 
@@ -104,17 +104,19 @@ namespace DAL.Services
             {
                 book.Image = new byte[upimage.ContentLength];
                 upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
-                _db.Books.Attach(book);
-                _db.Entry(book).State = EntityState.Modified;
+
             }
-            else
+            _db.Books.Attach(book);
+            _db.Entry(book).State = EntityState.Modified;
+            if (upimage == null)
             {
-                _db.Books.Attach(book);
                 _db.Entry(book).Property(m => m.Image).IsModified = false;
             }
             await _db.SaveChangesAsync();
             return GetBooks(book);
         }
+
+
 
         public async Task<BookViewModel> DeleteBook(int id)
         {
@@ -128,7 +130,7 @@ namespace DAL.Services
             var books = _db.Books.ToList();
             return GetEnumerableBooks(books);
         }
-       
+
         public List<BookViewModel> GetSearchResult(string searchString)
         {
             var books = new List<Book>();
