@@ -18,7 +18,7 @@
 <div>
     <hr />
     <div>
-        @Html.ActionLink("Create", "Create", null, new { data_modal = "", id = "btnCreate", @class = "btn btn-small btn-primary pull-Left" })
+        @Html.ActionLink("Create", "Create", null, new { data_modal="", id = "btnCrud", @class = "btn btn-small btn-primary pull-Left" })
     </div>
     <br />
     @using (Html.BeginForm("Index", "Books/Search", FormMethod.Get))
@@ -57,9 +57,9 @@
         .Encoded(false)
         .Sanitized(false)
         .RenderValueAs(d => @<div>
-                                @Html.ActionLink(" ","Details", new {id = d.Id}, new {data_modal = "", id = "btnDetails", @class = "glyphicon glyphicon-eye-open"}) | 
-                                @Html.ActionLink(" ", "Edit", new {id = d.Id}, new {data_modal = "", id = "btnEdit", @class = "glyphicon glyphicon-pencil"}) | 
-                                @Html.ActionLink(" ", "Delete", new {id = d.Id}, new {data_modal = "", id = "btnDelete", @class = "glyphicon glyphicon-remove-circle"})
+                                @Html.ActionLink(" ","Details", new {id = d.Id}, new { data_modal = "",id = "btnCrud", @class = "glyphicon glyphicon-eye-open"}) | 
+                                @Html.ActionLink(" ", "Edit", new {id = d.Id}, new { data_modal = "", id = "btnCrud", @class = "glyphicon glyphicon-pencil"}) | 
+                                @Html.ActionLink(" ", "Delete", new {id = d.Id}, new { del_modal="", id = "btnDelete", @class = "glyphicon glyphicon-remove-circle"})
         </div>);
 
 }).WithPaging(4)
