@@ -48,16 +48,18 @@ namespace MyMVCBookStore.Controllers
         // GET: Books/Details/5
         public async Task<ActionResult> Details(int? id)
         {
-            BookViewModel result;
+            var statuscode = await _service.GetStatusCode(id);
+            statuscode.ToString();
             try
-            {
-                result = await _service.GetBookById(id);
+            {               
+                var result = await _service.GetBookListById(id);
+                return PartialView("_Details", result);
             }
             catch
             {
-                return Content("siktir");
+                return Content("siktir "+  statuscode);
             }
-            return PartialView("_Details", result);
+            
         }
 
         // GET: Books/Create
@@ -96,19 +98,21 @@ namespace MyMVCBookStore.Controllers
         // GET: Books/Edit/5
         public async Task<ActionResult> Edit(int? id,Book book)
         {
-            BookViewModel result;
+            var statuscode = await _service.GetStatusCode(id);
+            statuscode.ToString();
             try
             {
                 ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FullName", book.AuthorId);
-                ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name", book.CountryId);
-                result = await _service.GetBookById(id);
+                ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name", book.CountryId);               
+                var result = await _service.GetBookListById(id);
+                return PartialView("_Edit", result);
             }
             catch
             {
 
-                return Content("siktir");
+                return Content("siktir "+statuscode);
             }
-            return PartialView("_Edit", result);
+            
         }
 
         // POST: Books/Edit/5
@@ -139,16 +143,18 @@ namespace MyMVCBookStore.Controllers
         // GET: Books/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            BookViewModel result;
+            var statuscode = await _service.GetStatusCode(id);
+            statuscode.ToString();
             try
-            {
-                result = await _service.GetBookById(id);
+            {               
+              var result=  await _service.GetBookListById(id);
+                return PartialView("_Delete", result);
             }
             catch
             {
-                return Content("siktir");
+                return Content("siktir "+statuscode);
             }
-            return PartialView("_Delete", result);
+            
         }
 
         // POST: Books/Delete/5

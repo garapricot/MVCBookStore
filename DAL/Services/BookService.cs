@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.ModelBinding;
 
 namespace DAL.Services
 {
@@ -17,6 +16,12 @@ namespace DAL.Services
     {
         private readonly ApplicationDbContext _db=new ApplicationDbContext();
         private bool disposed = false;
+        public enum BookResult
+        {
+            Succeeded = 1,
+            InValidModel,
+            IdNotFound,
+        }
         public List<BookViewModel> GetEnumerableBooks(IEnumerable<Book> books)
         {
             var result = new List<BookViewModel>();
@@ -53,19 +58,31 @@ namespace DAL.Services
             };
             return result;
         }
-        public async Task<BookViewModel> GetBookById(int? id)
+        public async Task<BookResult> GetStatusCode(int? id)
         {
-            Book book;
-            const HttpStatusCode message = HttpStatusCode.NotFound;
-            if (id == null)
+            var book = await _db.Books.FindAsync(id);
+             if (id != null&& book!= null)
+                {
+                    return BookResult.Succeeded;
+                }
+            else
             {
-                throw new Exception(message.ToString());
+                return BookResult.IdNotFound;
+            }
+
+        }
+        public async Task<BookViewModel> GetBookListById(int? id)
+        {
+            Book book;           
+            if (id != null)
+            {
+                book = await _db.Books.FindAsync(id);
             }
             else
             {
-               book = await _db.Books.FindAsync(id);
+                book = null;
             }
-            
+
             return GetBooks(book);
         }
         public async Task<BookViewModel> SaveCreatedBook(Book book, HttpPostedFileBase upimage)
