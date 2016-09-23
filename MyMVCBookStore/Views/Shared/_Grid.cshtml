@@ -1,4 +1,5 @@
-﻿@using GridMvc.Columns
+﻿<link href="~/Content/_Grid.css" rel="stylesheet" />
+@using GridMvc.Columns
 @model GridMvc.IGrid
 @if (Model == null) { return; }
 @if (Model.RenderOptions.RenderRowsOnly)
@@ -7,13 +8,13 @@
 }
 else
 {
-    <div class="grid-mvc" data-lang="@Model.Language" data-gridname="@Model.RenderOptions.GridName" data-selectable="@Model.RenderOptions.Selectable.ToString().ToLower()" data-multiplefilters ="@Model.RenderOptions.AllowMultipleFilters.ToString().ToLower()">
-        <div class="grid-wrap">
-            <table class="table table-striped grid-table">
-                <thead>
+    <div class="grid-mvc"  data-gridname="@Model.RenderOptions.GridName">
+        <div class="">
+            <table class="table fancy-table">
+                <thead class="thead-inverse header">
                     @RenderGridHeader()
                 </thead>
-                <tbody>
+                <tbody class="tablebody">
                     @RenderGridBody()
                 </tbody>
             </table>

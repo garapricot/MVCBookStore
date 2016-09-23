@@ -19,15 +19,11 @@ namespace MyMVCBookStore
                       "~/Scripts/bootstrap-hover-dropdown.js"));
             bundles.Add(new ScriptBundle("~/bundles/modalform").Include(
                         "~/Scripts/modalform.js"));
-            bundles.Add(new ScriptBundle("~/bundles/grid").Include(
-                       "~/Scripts/Scripts/gridmvc.min.js"));
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+           bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
             bundles.Add(new StyleBundle("~/Content/httpnotfoundstyle").Include(
                       "~/Content/httpnotfoundstyle.css"));
-            bundles.Add(new StyleBundle("~/Content/GridMvcCss").Include(
-                     "~/Content/Gridmvc.css"));
         }
     }
 }

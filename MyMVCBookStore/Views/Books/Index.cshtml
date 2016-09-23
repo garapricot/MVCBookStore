@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<DAL.ViewModel.BookViewModel>
 @using GridMvc.Html
-@Styles.Render("~Content/Gridmvc.css")
 @Styles.Render("~Content/css")
 @{
     ViewBag.Title = "Index";
@@ -27,43 +26,39 @@
 </div>
 @Html.Grid(Model).Columns(columns =>
 {
-
-    columns.Add(book => book.Id).Titled("N").Sortable(true);
-    columns.Add(book => book.Author.FullName).Sortable(true).Titled("Author").Filterable(true);
-    columns.Add(book => book.Country.Name).Sortable(true).Titled("Published Country").Filterable(true);
-    columns.Add(book => book.Title).Sortable(true).Titled("Book Title").Filterable(true);
-    columns.Add(book => book.Price).Sortable(true).Titled("Price").Filterable(true);
-    columns.Add(book => book.Description).Titled("Description");
-    columns.Add(book => book.PageCount).Sortable(true).Titled("Page Count").Filterable(true);
-    columns.Add(book => book.PublishedDay).Format("{0:dd/MM/yyyy}").Sortable(true).Titled("Published Day").Filterable(true);
-    columns.Add().Titled("Book Image")
+    columns.Add().Titled("  Book Image")
     .Encoded(false)
     .Sanitized(false)
-    .RenderValueAs(d => @<div>
+    .RenderValueAs(d => @<div class="imgClass">
         @{
             if (d.Image != null)
             {
                 var base64 = Convert.ToBase64String(d.Image);
                 var imgsrc = String.Format((string)"data:image/jpg;base64,{0}", (object)base64);
-                <img src="@imgsrc" style="max-height: 100px; max-width: 100px" />;
+                <a href="/Books/Details/@d.Id" data-modal=""><img id="imgId" class="img-circle" src="@imgsrc" style="height: 100px; width: 100px" /></a>;
             }
         }
     </div>
     );
-    columns.Add()
-        .Encoded(false)
-        .Sanitized(false)
-        .RenderValueAs(d => @<div>
-            @Html.ActionLink(" ", "Details", new { id = d.Id }, new { data_modal = "", id = "btnCrud", @class = "glyphicon glyphicon-eye-open" }) |
-            @Html.ActionLink(" ", "Edit", new { id = d.Id }, new { data_modal = "", id = "btnCrud", @class = "glyphicon glyphicon-pencil" }) |
-            @Html.ActionLink(" ", "Delete", new { id = d.Id }, new { del_modal = "", id = "btnDelete", @class = "glyphicon glyphicon-remove-circle" })
+            columns.Add(book => book.Author.FullName).Sortable(true).Titled("Author").Filterable(true);
+            columns.Add(book => book.Country.Name).Sortable(true).Titled("Published by").Filterable(true);
+            columns.Add(book => book.Title).Sortable(true).Titled("Title").Filterable(true);
+            columns.Add(book => book.Price).Sortable(true).Titled("Price").Filterable(true);
+            columns.Add(book => book.Description).Titled("Description");
+            columns.Add(book => book.PageCount).Sortable(true).Titled("Page").Filterable(true);
+            columns.Add(book => book.PublishedDay).Format("{0:dd/MM/yyyy}").Sortable(true).Titled("Published in").Filterable(true);
+            columns.Add()
+                .Encoded(false)
+                .Sanitized(false)
+                .RenderValueAs(d => @<div>
+            <a href="/Books/Edit/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" data-modal=""><i class="glyphicon glyphicon-pencil"></i></a> |
+            <a href="/Books/Delete/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" del-modal=""><i class="glyphicon glyphicon-remove-circle"></i></a>
         </div>);
 
 }).WithPaging(4)
 
 @section Scripts {
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/grid")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/modalform")
