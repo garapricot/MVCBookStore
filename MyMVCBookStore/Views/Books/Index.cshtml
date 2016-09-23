@@ -11,19 +11,47 @@
         </div>
     </div>
 </div>
-<div>
     <hr />
-    @Html.ActionLink("Add Book", "Create", null, new { data_modal = "", id = "btnCrud", @class = "btn btn-small btn-primary pull-Left" })
-    <form action="/Books/Search" method="get" class="btnSearch">
-        <div class="input-group btnSearch">
-            <input class="form-control btnSearch" id="SearchString" name="SearchString" value="Search your book" placeholder="Search for" required>
-            <span class="input-group-btn btnSearch">
-                <button type="submit" class="btn btn-default btnSearch1"><i class="glyphicon glyphicon-search"></i></button>
-            </span>
+    <div class="row">
+        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-4 btn-header">
+            @Html.ActionLink("Add Book", "Create", null, new { data_modal = "", id = "btnCrud", @class = "btn btn-small btn-primary pull-Left" })
         </div>
-    </form>
-    <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
-</div>
+        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-4 btn-header">
+            <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 visible-xs hidden-lg hidden-sm hidden-md btn-header btn-backToList">
+            <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
+        </div> 
+        <div class="col-lg-3 col-md-3 col-sm-5 col-xs-11 btn-search">
+            @*<form action="/Books/Search" method="get" class="btnSearch">
+                <div class="input-group btnSearch">
+                    <input class="form-control btnSearch" id="SearchString" name="SearchString" value="Search your book" placeholder="Search for" required>
+                    <span class="input-group-btn btnSearch">
+                        <button type="submit" class="btn btn-default btnSearch1"><i class="glyphicon glyphicon-search"></i></button>
+                    </span>
+                </div>
+            </form>*@
+            @*<form class="form-search" action="/Books/Search" method="get" >
+                <div class="input-append">
+                    <input type="text" class="input-medium search-query" id="SearchString" name="SearchString" value="Search your book" placeholder="Search for">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>*@
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div  class="col-lg-1 col-md-1 col-sm-3 hidden-xs  btn-header btn-backToList">
+            <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
+        </div>        
+    </div>   
 <br />
 @Html.Grid(Model).Columns(columns =>
 {
@@ -36,7 +64,7 @@
             {
                 var base64 = Convert.ToBase64String(d.Image);
                 var imgsrc = String.Format((string)"data:image/jpg;base64,{0}", (object)base64);
-                <a href="/Books/Details/@d.Id" data-modal=""><img id="imgId" class="img-circle" src="@imgsrc" style="height: 100px; width: 100px" /></a>;
+                <a href="/Books/Details/@d.Id" data-modal=""><img id="imgId" class="img-rounded" src="@imgsrc" style="height: 100px; width: 100px" /></a>;
             }
         }
     </div>

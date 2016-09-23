@@ -16,7 +16,7 @@ div.grid-header-title span {
 }
 
 .tablebody {
-    background-color: black;
+    background-color: #242E30;
     color: wheat;
 }
 
@@ -31,7 +31,7 @@ td.grid-cell div a {
     }
 
 #imgId {
-    border: 2px solid yellow;
+    border: 1px solid white;
 }
 
     #imgId:hover {
@@ -51,7 +51,7 @@ td.grid-cell div a {
 
 .tablediv {
     border: 2px solid yellow;
-    background-color: black;
+    background-color: #242E30;
     border-radius: 30px;
 }
 
@@ -73,24 +73,20 @@ td.grid-cell div a {
 #btnCrud {
     color: chartreuse;
     background-color: black;
-    display: inline-block;
-    margin-right: 10px;
 }
-
-.btnSearch {
-    display: inline-block;
-}
-
 .btnSearch1 {
     color: chartreuse;
     background-color: black;
-    display: inline-block;
-    margin-right: 50px;
 }
 
 .backToList {
     color: chartreuse;
     background-color: black;
-    display: inline-block;
-    margin-left: 35px;
+}
+.btn-header {
+    margin-top: 8px ! important;
+}
+
+.btn-search {
+    padding-right: 0px;
 }
