@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using DAL.Entities;
+using Dal.Entities;
 using System.Collections.Generic;
 
-namespace DAL.ViewModel
-{
+namespace Dal { 
     public class BookViewModel
     {
         public int Id { get; set; }

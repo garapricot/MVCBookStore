@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace Dal.Entities
 {
     public class ApplicationUser : IdentityUser
     {

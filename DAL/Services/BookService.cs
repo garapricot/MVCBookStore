@@ -1,6 +1,4 @@
-﻿using DAL.Context;
-using DAL.Entities;
-using DAL.ViewModel;
+﻿using Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,52 +8,63 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DAL.Services
+namespace Dal
 {
     public class BookService : IDisposable
     {
-        private readonly ApplicationDbContext _db = new ApplicationDbContext();
+        private readonly ApplicationDBContext _db = new ApplicationDBContext();
         private bool disposed = false;
         public enum BookResult
         {
+            None=0,
             Succeeded = 1,
             InValidModel,
             IdNotFound,
         }
-        public List<BookViewModel> GetEnumerableBooks(IEnumerable<Book> books)
+        public static List<BookViewModel> GetEnumerableBooks(IEnumerable<Book> books)
         {
             var result = new List<BookViewModel>();
-            foreach (var item in books)
+            if (books != null)
             {
-                result.Add(new BookViewModel
+                foreach (var item in books)
                 {
-                    Id = item.Id,
-                    Title = item.Title,
-                    PageCount = item.PageCount,
-                    Description = item.Description,
-                    PublishedDay = item.PublishedDay,
-                    Author = item.Author,
-                    Image = item.Image,
-                    Price = item.Price + item.Country.CountryCode,
-                    Country = item.Country
-                });
+                    result.Add(new BookViewModel
+                    {
+                        Id = item.Id,
+                        Title = item.Title,
+                        PageCount = item.PageCount,
+                        Description = item.Description,
+                        PublishedDay = item.PublishedDay,
+                        Author = item.Author,
+                        Image = item.Image,
+                        Price = item.Price + item.Country.CountryCode,
+                        Country = item.Country
+                    });
+                }
             }
+            
             return result;
         }
-        public BookViewModel GetBooks(Book book)
+        public static BookViewModel GetBooks(Book book)
         {
-            var result = new BookViewModel()
+            BookViewModel result=null;
+            if (book != null)
             {
-                Id = book.Id,
-                Title = book.Title,
-                PageCount = book.PageCount,
-                Description = book.Description,
-                PublishedDay = book.PublishedDay,
-                Author = book.Author,
-                Image = book.Image,
-                Price = book.Price,
-                Country = book.Country
-            };
+                result = new BookViewModel()
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    PageCount = book.PageCount,
+                    Description = book.Description,
+                    PublishedDay = book.PublishedDay,
+                    Author = book.Author,
+                    Image = book.Image,
+                    Price = book.Price,
+                    Country = book.Country
+                };
+            }
+
+            
             return result;
         }
         public async Task<BookResult> GetStatusCode(int? id)
@@ -125,36 +134,38 @@ namespace DAL.Services
             await _db.SaveChangesAsync();
             return GetBooks(book);
         }
+
         public List<BookViewModel> GetAllBook()
         {
             var books = _db.Books.ToList();
             return GetEnumerableBooks(books);
         }
 
-        public List<BookViewModel> GetSearchResult(string searchString)
+        public List<BookViewModel> GetSearchResult(string searchValue)
         {
             var books = new List<Book>();
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchValue))
             {
-                books.AddRange(_db.Books.Where(x => x.Title == searchString));
-                books.AddRange(_db.Books.Where(x => x.Author.FirstName == searchString));
-                books.AddRange(_db.Books.Where(x => x.Author.LastName == searchString));
-                books.AddRange(_db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == searchString));
-                books.AddRange(_db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == searchString));
-                books.AddRange(_db.Books.Where(x => x.Country.Name == searchString));
+                books.AddRange(_db.Books.Where(x => x.Title == searchValue));
+                books.AddRange(_db.Books.Where(x => x.Author.FirstName == searchValue));
+                books.AddRange(_db.Books.Where(x => x.Author.LastName == searchValue));
+                books.AddRange(_db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == searchValue));
+                books.AddRange(_db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == searchValue));
+                books.AddRange(_db.Books.Where(x => x.Country.Name == searchValue));
             }
             return GetEnumerableBooks(books);
         }
 
-        public DbSet<Author> GetAuthors()
+
+        public DbSet<Author> GetAuthors
         {
-            return _db.Authors;
+            get { return _db.Authors; }
         }
-        public DbSet<Country> GetCountries()
+        public DbSet<Country> GetCountries
         {
-            return _db.Countires;
+            get { return _db.Countires; }
         }
-        public virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
             {

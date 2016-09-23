@@ -1,7 +1,5 @@
-﻿using DAL.Context;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
-using System.Data.Entity;
 
 [assembly: OwinStartupAttribute(typeof(MyMVCBookStore.Startup))]
 namespace MyMVCBookStore

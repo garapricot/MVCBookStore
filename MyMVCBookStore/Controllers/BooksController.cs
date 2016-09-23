@@ -6,11 +6,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
-using DAL.Context;
-using DAL.Entities;
-using DAL.Services;
-using DAL.ViewModel;
+using Dal.Entities;
 using Microsoft.AspNet.Identity.Owin;
+using Dal;
 
 namespace MyMVCBookStore.Controllers
 {
@@ -66,8 +64,8 @@ namespace MyMVCBookStore.Controllers
         // GET: 
         public ActionResult Create()
         {
-            ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FullName");
-            ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name");
+            ViewBag.AuthorId = new SelectList(_service.GetAuthors, "Id", "FullName");
+            ViewBag.CountryId = new SelectList(_service.GetCountries, "Id", "Name");
             return PartialView("_Create");
         }
 
@@ -83,8 +81,8 @@ namespace MyMVCBookStore.Controllers
                     await _service.SaveCreatedBook(book, upimage);
                     return Json(new { success = true });
                 }
-                ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FullName", book.AuthorId);
-                ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name", book.CountryId);
+                ViewBag.AuthorId = new SelectList(_service.GetAuthors, "Id", "FullName", book.AuthorId);
+                ViewBag.CountryId = new SelectList(_service.GetCountries, "Id", "Name", book.CountryId);
 
             }
             catch
@@ -100,8 +98,8 @@ namespace MyMVCBookStore.Controllers
             ViewBag.statuscode = statuscode.ToString();
             try
             {
-                ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FullName", book.AuthorId);
-                ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name", book.CountryId);
+                ViewBag.AuthorId = new SelectList(_service.GetAuthors, "Id", "FullName", book.AuthorId);
+                ViewBag.CountryId = new SelectList(_service.GetCountries, "Id", "Name", book.CountryId);
                 var result = await _service.GetBookListById(id);
                 return PartialView("_Edit", result);
             }
@@ -126,8 +124,8 @@ namespace MyMVCBookStore.Controllers
                     return Json(new { success = true });
 
                 }
-                ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FirstName", book.AuthorId);
-                ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name", book.CountryId);
+                ViewBag.AuthorId = new SelectList(_service.GetAuthors, "Id", "FirstName", book.AuthorId);
+                ViewBag.CountryId = new SelectList(_service.GetCountries, "Id", "Name", book.CountryId);
             }
             catch
             {

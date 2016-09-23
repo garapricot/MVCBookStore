@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using DAL.Context;
-using DAL.Entities;
+using Dal.Entities;
+using Dal;
 
 namespace MyMVCBookStore.Controllers
 {
     public class AuthorsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDBContext db = new ApplicationDBContext();
 
         // GET: Authors
         public async Task<ActionResult> Index()
