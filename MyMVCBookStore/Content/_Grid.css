@@ -2,35 +2,95 @@
     background-color: black;
     -ms-opacity: 1.2;
     opacity: 1.2;
-    color:yellow;
+    color: yellow;
 }
+
 div.grid-header-title a {
     color: yellow;
     opacity: 0.8;
 }
+
 div.grid-header-title span {
     color: yellow;
     opacity: 0.8;
-}.tablebody {
-     background-color: black;
-     color: wheat;
- }
- td.grid-cell div a {
-     text-decoration: none;
-     color: green;
- }
- td.grid-cell div a:hover {
-     text-decoration: none;
-     color: red;
- }
- #imgId {
-     border: 2px solid yellow;
- }
- #imgId:hover {
-     -moz-box-shadow: 0 0 30px #ccc;
-      -webkit-box-shadow: 0 0 30px #ccc; 
-      box-shadow: 0 0 30px #ccc; 
- }
- .imgClass {
-     margin-left: 16px;
- }
+}
+
+.tablebody {
+    background-color: black;
+    color: wheat;
+}
+
+td.grid-cell div a {
+    text-decoration: none;
+    color: green;
+}
+
+    td.grid-cell div a:hover {
+        text-decoration: none;
+        color: red;
+    }
+
+#imgId {
+    border: 2px solid yellow;
+}
+
+    #imgId:hover {
+        -moz-box-shadow: 0 0 30px #ccc;
+        -webkit-box-shadow: 0 0 30px #ccc;
+        box-shadow: 0 0 30px #ccc;
+    }
+
+.imgClass {
+    margin-left: 14px;
+}
+
+#btnSearch {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.tablediv {
+    border: 2px solid yellow;
+    background-color: black;
+    border-radius: 30px;
+}
+
+.yellowLi {
+    color: black;
+    background-color: red;
+}
+
+.pagination li span {
+    color: yellow !important;
+    background-color: green !important;
+    border: 1px solid chartreuse !important;
+}
+
+.pagination {
+    padding-left: 22px;
+}
+
+#btnCrud {
+    color: chartreuse;
+    background-color: black;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.btnSearch {
+    display: inline-block;
+}
+
+.btnSearch1 {
+    color: chartreuse;
+    background-color: black;
+    display: inline-block;
+    margin-right: 50px;
+}
+
+.backToList {
+    color: chartreuse;
+    background-color: black;
+    display: inline-block;
+    margin-left: 35px;
+}

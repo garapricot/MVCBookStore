@@ -13,20 +13,21 @@
 </div>
 <div>
     <hr />
-    <div>
-        @Html.ActionLink("Create", "Create", null, new { data_modal = "", id = "btnCrud", @class = "btn btn-small btn-primary pull-Left" })
-    </div>
-    <br />
-    @using (Html.BeginForm("Index", "Books/Search", FormMethod.Get))
-
-    {
-        @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
-    }
+    @Html.ActionLink("Add Book", "Create", null, new { data_modal = "", id = "btnCrud", @class = "btn btn-small btn-primary pull-Left" })
+    <form action="/Books/Search" method="get" class="btnSearch">
+        <div class="input-group btnSearch">
+            <input class="form-control btnSearch" id="SearchString" name="SearchString" value="Search your book" placeholder="Search for" required>
+            <span class="input-group-btn btnSearch">
+                <button type="submit" class="btn btn-default btnSearch1"><i class="glyphicon glyphicon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
 </div>
+<br />
 @Html.Grid(Model).Columns(columns =>
 {
-    columns.Add().Titled("  Book Image")
+    columns.Add().Titled("Book Image")
     .Encoded(false)
     .Sanitized(false)
     .RenderValueAs(d => @<div class="imgClass">
@@ -51,9 +52,9 @@
                 .Encoded(false)
                 .Sanitized(false)
                 .RenderValueAs(d => @<div>
-            <a href="/Books/Edit/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" data-modal=""><i class="glyphicon glyphicon-pencil"></i></a> |
-            <a href="/Books/Delete/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" del-modal=""><i class="glyphicon glyphicon-remove-circle"></i></a>
-        </div>);
+                    <a href="/Books/Edit/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" data-modal=""><i class="glyphicon glyphicon-pencil"></i></a> |
+                    <a href="/Books/Delete/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" del-modal=""><i class="glyphicon glyphicon-remove-circle"></i></a>
+                </div>);
 
 }).WithPaging(4)
 
