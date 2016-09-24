@@ -2,22 +2,21 @@
     background-color: black;
     -ms-opacity: 1.2;
     opacity: 1.2;
-    color: yellow;
+    color: red;
 }
 
 div.grid-header-title a {
-    color: yellow;
+    color: red;
     opacity: 0.8;
 }
 
 div.grid-header-title span {
-    color: yellow;
+    color: red;
     opacity: 0.8;
 }
 
 .tablebody {
-    background-color: #242E30;
-    color: wheat;
+    color: white;
 }
 
 td.grid-cell div a {
@@ -43,50 +42,20 @@ td.grid-cell div a {
 .imgClass {
     margin-left: 14px;
 }
-
-#btnSearch {
-    display: inline-block;
-    margin-right: 10px;
-}
-
 .tablediv {
-    border: 2px solid yellow;
+    border: 1px solid red;
     background-color: #242E30;
-    border-radius: 30px;
-}
-
-.yellowLi {
-    color: black;
-    background-color: red;
 }
 
 .pagination li span {
     color: yellow !important;
-    background-color: green !important;
-    border: 1px solid chartreuse !important;
+    background-color: red !important;
+    border: 1px solid white !important;
 }
 
 .pagination {
     padding-left: 22px;
 }
-
-#btnCrud {
-    color: chartreuse;
-    background-color: black;
-}
-.btnSearch1 {
-    color: chartreuse;
-    background-color: black;
-}
-
-.backToList {
-    color: chartreuse;
-    background-color: black;
-}
-.btn-header {
-    margin-top: 8px ! important;
-}
-
-.btn-search {
-    padding-right: 0px;
+.btn_color{
+    background-color:white;
 }

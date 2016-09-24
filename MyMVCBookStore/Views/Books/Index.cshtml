@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<Dal.BookViewModel>
 @using GridMvc.Html
-@Styles.Render("~Content/css")
+@*@Styles.Render("~Content/css")*@
+
 @{
     ViewBag.Title = "Index";
 }
+
 <div id='myModal' class='modal fade in'>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -12,37 +14,21 @@
     </div>
 </div>
     <hr />
-    <div class="row">
+    @*<div class="row">
         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-4 btn-header">
             @Html.ActionLink("Add Book", "Create", null, new { data_modal = "", id = "btnCrud", @class = "btn btn-small btn-primary pull-Left" })
         </div>
         <div class="col-lg-1 col-md-1 col-sm-2 col-xs-4 btn-header">
-            <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
+            <a href="/Authors/Create/" type="button" class="btn btn-default">Add Author</a>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 visible-xs hidden-lg hidden-sm hidden-md btn-header btn-backToList">
             <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
         </div> 
-        <div class="col-lg-3 col-md-3 col-sm-5 col-xs-11 btn-search">
-            @*<form action="/Books/Search" method="get" class="btnSearch">
-                <div class="input-group btnSearch">
-                    <input class="form-control btnSearch" id="SearchString" name="SearchString" value="Search your book" placeholder="Search for" required>
-                    <span class="input-group-btn btnSearch">
-                        <button type="submit" class="btn btn-default btnSearch1"><i class="glyphicon glyphicon-search"></i></button>
-                    </span>
-                </div>
-            </form>*@
-            @*<form class="form-search" action="/Books/Search" method="get" >
-                <div class="input-append">
-                    <input type="text" class="input-medium search-query" id="SearchString" name="SearchString" value="Search your book" placeholder="Search for">
+        <div class="col-lg-3 col-md-0 col-sm-5 col-xs-11 btn-search">          
+            <form class="navbar-form btnSearch" action="/Books/Search" method="get" role="search">
+                <div class="input-group">                    
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                    </div>
-                </div>
-            </form>*@
-            <form class="navbar-form" role="search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-                    <div class="input-group-btn">
+                        <input type="text" class="form-control" placeholder="Search" name="searchstring" id="srch-term">
                         <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
@@ -51,7 +37,36 @@
         <div  class="col-lg-1 col-md-1 col-sm-3 hidden-xs  btn-header btn-backToList">
             <a href="/Books/Index/" type="button" class="btn btn-default backToList">Back To List</a>
         </div>        
-    </div>   
+    </div>*@   
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/Books/Index/"><span class="glyphicon glyphicon-list-alt"></span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="nav navbar-nav">
+                <a href="/Authors/Create/" type="button" class="btn btn-default navbar-btn">Add Author</a>  
+            </div>
+            <form class="navbar-form navbar-left" action="/Books/Search" method="get" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="searchstring" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            </form>            
+            <div class="nav navbar-nav navbar-right">
+                <a href="/Books/Create/" type="button" data-modal class="btn btn-default navbar-btn">Add Author</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
 <br />
 @Html.Grid(Model).Columns(columns =>
 {
@@ -80,15 +95,15 @@
                 .Encoded(false)
                 .Sanitized(false)
                 .RenderValueAs(d => @<div>
-                    <a href="/Books/Edit/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" data-modal=""><i class="glyphicon glyphicon-pencil"></i></a> |
-                    <a href="/Books/Delete/@d.Id" type="button" class="btn btn-warning btn-circle btn-xl" del-modal=""><i class="glyphicon glyphicon-remove-circle"></i></a>
+                    <a href="/Books/Edit/@d.Id" type="button" class="btn btn-circle btn-xl btn_color" data-modal=""><i class="glyphicon glyphicon-pencil"></i></a>
+                    <a href="/Books/Delete/@d.Id" type="button" class="btn btn-circle btn-xl btn_color" del-modal=""><i class="glyphicon glyphicon-remove-circle"></i></a>
                 </div>);
 
 }).WithPaging(4)
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/modalform")
 }
