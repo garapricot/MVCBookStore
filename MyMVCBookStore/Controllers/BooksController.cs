@@ -115,23 +115,23 @@ namespace MyMVCBookStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book, HttpPostedFileBase upimage)
         {
-            BookViewModel result = null;
+          
             try
             {
                 if (ModelState.IsValid)
                 {
-                    result = await _service.EditBook(book, upimage);
+                    await _service.EditBook(book, upimage);
                     return Json(new { success = true });
 
                 }
-                ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FirstName", book.AuthorId);
+                ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FullName", book.AuthorId);
                 ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name", book.CountryId);
             }
             catch
             {
                 return View("Error");
             }
-            return PartialView("_Edit", result);
+            return PartialView("_Edit");
         }
 
         // GET: 
