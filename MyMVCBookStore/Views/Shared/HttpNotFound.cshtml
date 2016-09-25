@@ -4,23 +4,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
+<title>Not Found</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     @Styles.Render("~/Content/httpnotfoundstyle");
 </head>
 
 <body>
-	<div class="tail-left"></div>
-	<div id="main">
-		<div id="header">
-			<h1>Nothing alive here!<span><strong></strong> @ViewBag.statuscode</span></h1>
-		</div>
-		<div id="content">
-			<ul class="nav">
-         	<li class="home">@Html.ActionLink("Home","Index","Home")</li>                     
-         </ul>         
-		</div>
-	</div>
+	
+        <div class="row">
+            <div class="container">
+                <p class="sub-heading"> @ViewBag.statuscode</p>
+                <hr class="hr-style-404" />
+                <p class="redirect-style-404">Something went wrong</p>
+                    <a href="/Home/Index/" type="button" class="btn btn-default btn_home">Home</a>
+            </div>
+        </div>
 </body>
 </html>

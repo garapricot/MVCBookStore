@@ -115,7 +115,6 @@ namespace MyMVCBookStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book, HttpPostedFileBase upimage)
         {
-          
             try
             {
                 if (ModelState.IsValid)
