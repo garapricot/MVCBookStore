@@ -2,10 +2,10 @@
     $('#book_grid').dataTable({
         "bPaginate": false,
         "bLengthChange": false,
-        filter: false,
+        "ordering": false,
         "bInfo": false,
         "bAutoWidth": false,
-        "bSearch": false,
+        "searching": false,
         columnDefs: [
             { responsivePriority: 1, targets: 8 }
     ]
