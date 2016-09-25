@@ -19,7 +19,9 @@ namespace MyMVCBookStore
                       "~/Scripts/bootstrap-hover-dropdown.js"));
             bundles.Add(new ScriptBundle("~/bundles/modalform").Include(
                         "~/Scripts/modalform.js"));
-           bundles.Add(new StyleBundle("~/Content/css").Include(                      
+            bundles.Add(new ScriptBundle("~/bundles/responsivetable").Include(
+                        "~/Scripts/responsiveTable.js"));
+            bundles.Add(new StyleBundle("~/Content/css").Include(                      
                       "~/Content/site.css"));
             bundles.Add(new StyleBundle("~/Content/httpnotfoundstyle").Include(
                       "~/Content/httpnotfoundstyle.css"));

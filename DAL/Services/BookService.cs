@@ -26,21 +26,10 @@ namespace Dal
             var result = new List<BookViewModel>();
             if (books != null)
             {
-                foreach (var item in books)
+                result.AddRange(books.Select(item => new BookViewModel
                 {
-                    result.Add(new BookViewModel
-                    {
-                        Id = item.Id,
-                        Title = item.Title,
-                        PageCount = item.PageCount,
-                        Description = item.Description,
-                        PublishedDay = item.PublishedDay,
-                        Author = item.Author,
-                        Image = item.Image,
-                        Price = item.Price + item.Country.CountryCode,
-                        Country = item.Country
-                    });
-                }
+                    Id = item.Id, Title = item.Title, PageCount = item.PageCount, Description = item.Description, PublishedDay = item.PublishedDay, Author = item.Author, Image = item.Image, Price = item.Price + item.Country.CountryCode, Country = item.Country
+                }));
             }
             
             return result;
@@ -137,6 +126,10 @@ namespace Dal
 
         public List<BookViewModel> GetAllBook()
         {
+            //int numberOfObjectsPerPage = 4;
+            //var books = _db.Books
+            //  .Skip(numberOfObjectsPerPage * (Convert.ToInt32(grid_page)-1))
+            //  .Take(numberOfObjectsPerPage).ToList();
             var books = _db.Books.ToList();
             return GetEnumerableBooks(books);
         }
@@ -152,19 +145,16 @@ namespace Dal
                 books.AddRange(_db.Books.Where(x => x.Author.LastName + " " + x.Author.FirstName == searchValue));
                 books.AddRange(_db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == searchValue));
                 books.AddRange(_db.Books.Where(x => x.Country.Name == searchValue));
+                return GetEnumerableBooks(books);
             }
             return GetEnumerableBooks(books);
         }
 
 
-        public DbSet<Author> GetAuthors
-        {
-            get { return _db.Authors; }
-        }
-        public DbSet<Country> GetCountries
-        {
-            get { return _db.Countires; }
-        }
+        public DbSet<Author> GetAuthors => _db.Authors;
+
+        public DbSet<Country> GetCountries => _db.Countires;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)

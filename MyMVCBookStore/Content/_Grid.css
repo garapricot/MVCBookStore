@@ -1,24 +1,23 @@
 ﻿.header {
     background-color: black;
-    -ms-opacity: 1.2;
-    opacity: 1.2;
+    -ms-opacity: 0.9;
+    opacity: 0.9;
     color: red;
 }
 
 div.grid-header-title a {
-    color: red;
+    color: antiquewhite;
     opacity: 0.8;
 }
 
 div.grid-header-title span {
-    color: red;
+    color: antiquewhite;
     opacity: 0.8;
 }
-
-.tablebody {
-    color: white;
+.table_body_color {
+    background-color: #242E30;
+    color: #cccccc;
 }
-
 td.grid-cell div a {
     text-decoration: none;
     color: green;
@@ -42,11 +41,6 @@ td.grid-cell div a {
 .imgClass {
     margin-left: 14px;
 }
-.tablediv {
-    border: 1px solid red;
-    background-color: #242E30;
-}
-
 .pagination li span {
     color: yellow !important;
     background-color: red !important;
@@ -58,4 +52,7 @@ td.grid-cell div a {
 }
 .btn_color{
     background-color:white;
+}
+tr td ul li {
+    text-decoration:none;
 }

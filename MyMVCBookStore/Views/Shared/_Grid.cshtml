@@ -9,15 +9,16 @@
 else
 {
     <div class="grid-mvc"  data-gridname="@Model.RenderOptions.GridName">
-        <div class="tablediv">
-            <table class="table fancy-table">
-                <thead class="thead-inverse header">
-                    @RenderGridHeader()
-                </thead>
-                <tbody class="tablebody">
-                    @RenderGridBody()
-                </tbody>
-            </table>
+        <div>
+                <table table id="book_grid" class="table  dt-responsive" cellspacing="0" width="100%">
+                    <thead class="thead-inverse header">
+                        @RenderGridHeader()
+                    </thead>
+                    <tbody class="table_body_color">
+                        @RenderGridBody()
+                    </tbody>
+                </table>
+            
             @RenderGridPager()
         </div>
     </div>
