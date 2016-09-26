@@ -16,6 +16,7 @@ div.grid-header-title span {
 }
 .table_body_color {
     background-color: #242E30;
+    opacity: 0.99;
     color: #cccccc;
 }
 td.grid-cell div a {
@@ -43,7 +44,7 @@ td.grid-cell div a {
 }
 .pagination li span {
     color: yellow !important;
-    background-color: red !important;
+    background-color: black !important;
     border: 1px solid white !important;
 }
 
@@ -55,4 +56,10 @@ td.grid-cell div a {
 }
 tr td ul li {
     text-decoration:none;
+}
+.gir_style {
+    border: solid 1px;
+    border-radius: 10px;
+    color: #242e30;background-image: url("/Resource/Book_index/book_index_bg.jpg");
+    background-repeat: repeat;
 }
