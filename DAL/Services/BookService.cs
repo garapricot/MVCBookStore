@@ -130,7 +130,11 @@ namespace Dal
             var books = _db.Books.ToList();
             return GetEnumerableBooks(books);
         }
-
+        public List<BookViewModel> GetHomeBook()
+        {
+            var books = _db.Books.Take(16).ToList();
+            return GetEnumerableBooks(books);
+        }
         public List<BookViewModel> GetSearchResult(string searchString)
         {
             var books = new List<Book>();

@@ -15,7 +15,7 @@ namespace MyMVCBookStore.Controllers
             List<BookViewModel> result = null;
             try
             {
-                result = _service.GetAllBook();
+                result = _service.GetHomeBook();
             }
             catch
             {
