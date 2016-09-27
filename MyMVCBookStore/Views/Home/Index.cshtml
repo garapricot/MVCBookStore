@@ -1,3 +1,47 @@
-﻿@{
+﻿@model IEnumerable<Dal.BookViewModel>
+@{
     ViewBag.Title = "Home Page";
 }
+<link href="~/Content/Home_index.css" rel="stylesheet" />
+<nav class="navbar navbar-default nav_bg_color">
+<div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/Home/Index/"><span class="glyphicon glyphicon-list-alt"></span></a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">        
+        <form class="navbar-form navbar-left" action="/Home/Search" method="get" role="search">
+            <div class="form-group">
+                <input type="text" class="form-control" name="searchstring" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+        </form>        
+    </div>
+</div>
+</nav>
+    @{ 
+       
+   foreach (var item in Model)
+   {
+
+    <div  style="padding-left:70px; float:left">
+        @if (item.Image != null)
+        {
+            var base64 = Convert.ToBase64String(item.Image);
+            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+            <img class="img-rounded image_padding" src="@imgsrc"  style="max-height:200px;max-width:200px;" />
+        }
+        else
+        {
+           
+            <img class="img-rounded image_padding" src="~/Resource/no image 200x200.png"  style="max-height:200px;max-width:200px;" />
+        }
+    </div>
+   }
+
+    }
