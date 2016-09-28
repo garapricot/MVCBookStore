@@ -11,6 +11,7 @@ namespace Dal {
         public int CountryId { get; set; }
         public int AuthorId { get; set; }
         public string Title { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public decimal Price { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

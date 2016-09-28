@@ -70,7 +70,7 @@
             columns.Add(book => book.Author.FullName).Sortable(true).Titled("Author").Filterable(true);
             columns.Add(book => book.Country.Name).Sortable(true).Titled("Published by").Filterable(true);
             columns.Add(book => book.Title).Sortable(true).Titled("Title").Filterable(true);
-            columns.Add(book => book.Price).Sortable(true).Titled("Price").Filterable(true);
+            columns.Add(book => book.Price).Format("{0:C}").Sortable(true).Titled("Price").Filterable(true);
             //columns.Add(book => book.Description).Titled("Description");
             columns.Add(book => book.PageCount).Sortable(true).Titled("Page").Filterable(true);
             columns.Add(book => book.PublishedDay).Format("{0:dd/MM/yyyy}").Sortable(true).Titled("Published in").Filterable(true);
