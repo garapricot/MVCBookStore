@@ -1,4 +1,5 @@
 ﻿using Dal.Entities;
+using DAL.Entities.Base;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
@@ -18,5 +19,7 @@ namespace Dal
         public DbSet<Book> Books { get; set; }
         public DbSet<Country> Countires { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<Attributes> Attributes { get; set; }
+        public DbSet<AttributeType> AttributeTypes { get; set; }
     }
 }

@@ -78,15 +78,16 @@ namespace MyMVCBookStore.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await _service.SaveCreatedBook(book, upimage);
+                    await _service.SaveCreatedBook(book, upimage,result);
                     return Json(new { success = true });
                 }
                 ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FullName", book.AuthorId);
                 ViewBag.CountryId = new SelectList(_service.GetCountries(), "Id", "Name", book.CountryId);
 
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e.Message);   
                 return View("Error");
             }
             return PartialView("_Create", result);

@@ -6,6 +6,5 @@ namespace Dal.Entities
     {
         [Key]
         public int Id { get; set; }
-
     }
 }

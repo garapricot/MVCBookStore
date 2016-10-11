@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Dal.Entities
 {
    public class Country:BaseEntity
-    { 
+    {        
         public int CountryCode { get; set; }
         public string Name { get; set; }
     }   

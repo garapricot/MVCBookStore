@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Dal.Entities
 {   
     public partial class Author : BaseEntity
-    {
+    {        
         [Required]
         public string FirstName { get; set; }
         [Required]

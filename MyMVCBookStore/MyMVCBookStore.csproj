@@ -208,6 +208,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AttributesController.cs" />
     <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -256,6 +257,11 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\responsiveTable.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Attributes\Create.cshtml" />
+    <Content Include="Views\Attributes\Delete.cshtml" />
+    <Content Include="Views\Attributes\Details.cshtml" />
+    <Content Include="Views\Attributes\Edit.cshtml" />
+    <Content Include="Views\Attributes\Index.cshtml" />
     <None Include="Views\Shared\HttpNotFound.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

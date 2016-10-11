@@ -90,11 +90,14 @@
   <ItemGroup>
     <Compile Include="Context\BookDbContext.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Base\Attributes.cs" />
+    <Compile Include="Entities\Base\AttributeType.cs" />
     <Compile Include="Entities\Base\Author.cs" />
     <Compile Include="Entities\Base\Book.cs" />
     <Compile Include="Entities\Base\Country.cs" />
     <Compile Include="Entities\Base\ApplicationUser.cs" />
     <Compile Include="Entities\Extend\Author.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BookService.cs" />
     <Compile Include="ViewModel\BookViewModel.cs" />

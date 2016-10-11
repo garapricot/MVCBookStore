@@ -73,11 +73,11 @@
             columns.Add(book => book.Price).Format("{0:C}").Sortable(true).Titled("Price").Filterable(true);
             //columns.Add(book => book.Description).Titled("Description");
             columns.Add(book => book.PageCount).Sortable(true).Titled("Page").Filterable(true);
-            columns.Add(book => book.PublishedDay).Format("{0:dd/MM/yyyy}").Sortable(true).Titled("Published in").Filterable(true);
+            columns.Add(book => book.Attribute.Value).Sortable(true).Titled("Published in");
             columns.Add()
-                .Encoded(false)
-                .Sanitized(false)
-                .RenderValueAs(d => @<div>
+                                        .Encoded(false)
+                                        .Sanitized(false)
+                                        .RenderValueAs(d => @<div>
                     <a href="/Books/Edit/@d.Id" data-modal="" type="button" class="btn btn-circle btn-xl btn_color"><i class="glyphicon glyphicon-pencil"></i></a>
                     <a href="/Books/Delete/@d.Id" del-modal="" type="button" class="btn btn-circle btn-xl btn_color"><i class="glyphicon glyphicon-remove-circle"></i></a>
                 </div>);

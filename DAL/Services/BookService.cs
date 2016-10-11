@@ -1,6 +1,7 @@
 ﻿
 using Dal;
 using Dal.Entities;
+using DAL.Entities.Base;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -33,7 +34,7 @@ namespace Dal
                     Title = item.Title,
                     PageCount = item.PageCount,
                     Description = item.Description,
-                    PublishedDay = item.PublishedDay,
+                    Attribute = item.Attribute,
                     Author = item.Author,
                     Image = item.Image,
                     Price = item.Price + item.Country.CountryCode,
@@ -50,7 +51,7 @@ namespace Dal
                 Title = book.Title,
                 PageCount = book.PageCount,
                 Description = book.Description,
-                PublishedDay = book.PublishedDay,
+                Attribute = book.Attribute,
                 Author = book.Author,
                 Image = book.Image,
                 Price = book.Price,
@@ -85,12 +86,16 @@ namespace Dal
 
             return GetBooks(book);
         }
-        public async Task<BookViewModel> SaveCreatedBook(Book book, HttpPostedFileBase upimage)
+        public async Task<BookViewModel> SaveCreatedBook(Book book, HttpPostedFileBase upimage,BookViewModel boook)
         {
             if (upimage != null)
             {
                 book.Image = new byte[upimage.ContentLength];
                 upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
+            }
+            foreach (var item in _db.Attributes)
+            {
+                item.Value = boook.Attribute.Value;
             }
             _db.Books.Add(book);
             await _db.SaveChangesAsync();
