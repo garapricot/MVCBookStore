@@ -23,7 +23,7 @@ namespace Dal
             InValidModel,
             IdNotFound,
         }
-        public List<BookViewModel> GetEnumerableBooks(IEnumerable<Book> books)
+        public List<BookViewModel> GetEnumerableBooks(IEnumerable<Book> books, IEnumerable<Attributes> attributes)
         {
             var result = new List<BookViewModel>();
             foreach (var item in books)
@@ -34,11 +34,11 @@ namespace Dal
                     Title = item.Title,
                     PageCount = item.PageCount,
                     Description = item.Description,
-                    Attribute = item.Attribute,
                     Author = item.Author,
                     Image = item.Image,
                     Price = item.Price + item.Country.CountryCode,
-                    Country = item.Country
+                    Country = item.Country,
+                    Attribute = attributes.Where(attr => attr.BookID == item.Id).ToList()
                 });
             }
             return result;
@@ -51,7 +51,6 @@ namespace Dal
                 Title = book.Title,
                 PageCount = book.PageCount,
                 Description = book.Description,
-                Attribute = book.Attribute,
                 Author = book.Author,
                 Image = book.Image,
                 Price = book.Price,
@@ -86,17 +85,15 @@ namespace Dal
 
             return GetBooks(book);
         }
-        public async Task<BookViewModel> SaveCreatedBook(Book book, HttpPostedFileBase upimage,BookViewModel boook)
+        public async Task<BookViewModel> SaveCreatedBook(Book book, HttpPostedFileBase upimage, BookViewModel boook)
         {
             if (upimage != null)
             {
                 book.Image = new byte[upimage.ContentLength];
                 upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
             }
-            foreach (var item in _db.Attributes)
-            {
-                item.Value = boook.Attribute.Value;
-            }
+
+
             _db.Books.Add(book);
             await _db.SaveChangesAsync();
             return GetBooks(book);
@@ -125,21 +122,28 @@ namespace Dal
 
         public async Task<BookViewModel> DeleteBook(int id)
         {
+          
             Book book = await _db.Books.FindAsync(id);
+        var attr=    _db.Attributes.Where(x => x.BookID == id);
+            foreach (var item in attr)
+            {
+                item.BookID = null;
+            }
             _db.Books.Remove(book);
-            await _db.SaveChangesAsync();
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
             return GetBooks(book);
         }
         public List<BookViewModel> GetAllBook()
         {
             var books = _db.Books.ToList();
-            return GetEnumerableBooks(books);
+            var attr = _db.Attributes.ToList();
+            return GetEnumerableBooks(books, attr);
         }
-        public List<BookViewModel> GetHomeBook()
-        {
-            var books = _db.Books.Take(16).ToList();
-            return GetEnumerableBooks(books);
-        }
+
         public List<BookViewModel> GetSearchResult(string searchString)
         {
             var books = new List<Book>();
@@ -152,7 +156,7 @@ namespace Dal
                 books.AddRange(_db.Books.Where(x => x.Author.FirstName + " " + x.Author.LastName == searchString));
                 books.AddRange(_db.Books.Where(x => x.Country.Name == searchString));
             }
-            return GetEnumerableBooks(books);
+            return GetEnumerableBooks(books, _db.Attributes);
         }
 
         public DbSet<Author> GetAuthors()

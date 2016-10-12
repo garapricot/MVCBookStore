@@ -21,5 +21,19 @@ namespace Dal
         public DbSet<Author> Authors { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<AttributeType> AttributeTypes { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<AttributeType>()
+                .HasMany<Book>(s => s.Books)
+                .WithMany(c => c.AttributeTypes)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("BookID");
+                    cs.MapRightKey("AttributeTypeId");
+                    cs.ToTable("Attributes");
+                });
+        }
     }
 }

@@ -15,8 +15,7 @@ namespace Dal.Entities
 {
     public class Book : BaseEntity
     {
-        [ForeignKey(nameof(Attribute))]
-        public int? AttributeId { get; set; }
+        
         [Required]
         [ForeignKey(nameof(Country))]
         public int CountryId { get; set; }
@@ -30,7 +29,7 @@ namespace Dal.Entities
         public string Description { get; set; }
         public int PageCount { get; set; }
         public byte[] Image { get; set; }
-        public virtual Attributes Attribute { get; set; }
+        public virtual List<AttributeType> AttributeTypes { get; set; }
         public virtual Author Author { get; set; }
         public virtual Country Country { get; set; }
         

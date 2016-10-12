@@ -10,5 +10,6 @@ namespace DAL.Entities.Base
     public class AttributeType : BaseEntity
     {
         public string Name { get; set; }
+        public virtual List<Book> Books { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace MyMVCBookStore.Controllers
         // GET: Attributes
         public async Task<ActionResult> Index()
         {
-            var attributes = db.Attributes.Include(a => a.AttributeType);
+            var attributes = db.Attributes.Include(a => a.AttributeType).Include(a => a.Books);
             return View(await attributes.ToListAsync());
         }
 
@@ -42,6 +42,7 @@ namespace MyMVCBookStore.Controllers
         public ActionResult Create()
         {
             ViewBag.AttributeTypeId = new SelectList(db.AttributeTypes, "Id", "Name");
+            ViewBag.BookID = new SelectList(db.Books, "Id", "Title");
             return View();
         }
 
@@ -50,7 +51,7 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,AttributeTypeId")] Attributes attributes)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,AttributeTypeId,BookID,Value")] Attributes attributes)
         {
             if (ModelState.IsValid)
             {
@@ -60,6 +61,7 @@ namespace MyMVCBookStore.Controllers
             }
 
             ViewBag.AttributeTypeId = new SelectList(db.AttributeTypes, "Id", "Name", attributes.AttributeTypeId);
+            ViewBag.BookID = new SelectList(db.Books, "Id", "Title", attributes.BookID);
             return View(attributes);
         }
 
@@ -76,6 +78,7 @@ namespace MyMVCBookStore.Controllers
                 return HttpNotFound();
             }
             ViewBag.AttributeTypeId = new SelectList(db.AttributeTypes, "Id", "Name", attributes.AttributeTypeId);
+            ViewBag.BookID = new SelectList(db.Books, "Id", "Title", attributes.BookID);
             return View(attributes);
         }
 
@@ -84,7 +87,7 @@ namespace MyMVCBookStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,AttributeTypeId")] Attributes attributes)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,AttributeTypeId,BookID,Value")] Attributes attributes)
         {
             if (ModelState.IsValid)
             {
@@ -93,6 +96,7 @@ namespace MyMVCBookStore.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.AttributeTypeId = new SelectList(db.AttributeTypes, "Id", "Name", attributes.AttributeTypeId);
+            ViewBag.BookID = new SelectList(db.Books, "Id", "Title", attributes.BookID);
             return View(attributes);
         }
 

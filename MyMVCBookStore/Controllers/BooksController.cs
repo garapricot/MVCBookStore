@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Dal.Entities;
 using Microsoft.AspNet.Identity.Owin;
 using Dal;
+using DAL.Entities.Base;
 
 namespace MyMVCBookStore.Controllers
 {

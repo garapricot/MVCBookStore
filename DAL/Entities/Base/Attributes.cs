@@ -14,7 +14,10 @@ namespace DAL.Entities.Base
         public string Name { get; set; }
         [ForeignKey(nameof(AttributeType))]
         public int AttributeTypeId { get; set; }
+        [ForeignKey(nameof(Books))]
+        public int? BookID { get; set; }
         public string Value { get; set; }
         public virtual AttributeType AttributeType { get; set; }
+        public virtual Book Books { get; set; }
     }
 }

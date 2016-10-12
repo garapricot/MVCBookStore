@@ -10,7 +10,6 @@ namespace Dal
     public class BookViewModel
     {
         public int Id { get; set; }
-        public int? AttributeId { get; set; }
         public int CountryId { get; set; }
         public int AuthorId { get; set; }
         public string Title { get; set; }
@@ -21,7 +20,7 @@ namespace Dal
         public byte[] Image { get; set; }
         public Author Author { get; set; }
         public Country Country { get; set; }
-        public Attributes Attribute { get; set; }
+        public List<Attributes> Attribute { get; set; }
 
 
     }
