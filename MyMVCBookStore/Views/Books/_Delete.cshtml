@@ -6,8 +6,28 @@
 </div>
 <div class="modal-body">
     <dl class="dl-horizontal">
+        <dt class="imgClass">
+
+            @{
+                if (Model.Image != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.Image);
+                    var imgsrc = String.Format((string)"data:image/jpg;base64,{0}", (object)base64);
+                    <img id="imgId" class="img-rounded" src="@imgsrc" style="max-height: 100px; max-width: 100px" />
+                    ;
+                }
+                else
+                {
+                    <img id="imgId" class="img-rounded" src="/Resource/no-image.png" style="max-height: 100px; max-width: 100px" />
+                }
+            }
+
+        </dt>
+        <dd>
+
+        </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Author.FirstName)
+            Author
         </dt>
 
         <dd>
@@ -15,7 +35,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Country.Name)
+            Country
         </dt>
 
         <dd>
@@ -23,7 +43,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            Title
         </dt>
 
         <dd>
@@ -38,41 +58,26 @@
             @{
                 var price = Model.Price + Model.Country.CountryCode;
             }
-            @price
+            $@price
         </dd>
-
-       
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PageCount)
+            Pages
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.PageCount)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Image)
+            Description
         </dt>
 
-        <dd>
-            @if (Model.Image != null)
-            {
-                var base64 = Convert.ToBase64String(Model.Image);
-                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
-                <img src="@imgsrc" style="max-height:100px;max-width:100px" alt="Image Doesn't Exists"/>
-            }
-
+        <dd style="max-height: 300px;max-width: 300px">
+            @Html.DisplayFor(model => model.Description)
         </dd>
 
+
     </dl>
+
 
 
 </div>

@@ -60,6 +60,6 @@ tr td ul li {
 .gir_style {
     border: solid 1px;
     border-radius: 10px;
-    color: #242e30;background-image: url("/Resource/Book_index/book_index_bg.jpg");
-    background-repeat: repeat;
+    color: #242e30;
+    background-image: url('/Resource/Book_index/tkam-painting-idea.jpg');
 }

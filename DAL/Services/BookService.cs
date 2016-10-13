@@ -2,6 +2,7 @@
 using Dal;
 using Dal.Entities;
 using DAL.Entities.Base;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -93,7 +94,7 @@ namespace Dal
                 upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
             }
 
-
+            book.DelId = HttpContext.Current.User.Identity.GetUserId();
             _db.Books.Add(book);
             await _db.SaveChangesAsync();
             return GetBooks(book);
@@ -108,13 +109,25 @@ namespace Dal
                 upimage.InputStream.Read(book.Image, 0, upimage.ContentLength);
 
             }
-            _db.Books.Attach(book);
-            _db.Entry(book).State = EntityState.Modified;
+            if (book.DelId == HttpContext.Current.User.Identity.GetUserId())
+            {
+                _db.Books.Attach(book);
+                _db.Entry(book).State = EntityState.Modified;
+            }
+            else
+            {
+                return GetBooks(book);
+            }
+
             if (upimage == null)
             {
                 _db.Entry(book).Property(m => m.Image).IsModified = false;
             }
-            await _db.SaveChangesAsync();
+            if (book.DelId == HttpContext.Current.User.Identity.GetUserId())
+            {
+                await _db.SaveChangesAsync();
+            }
+
             return GetBooks(book);
         }
 
@@ -124,17 +137,16 @@ namespace Dal
         {
           
             Book book = await _db.Books.FindAsync(id);
-        var attr=    _db.Attributes.Where(x => x.BookID == id);
+            var attr=    _db.Attributes.Where(x => x.BookID == id);
             foreach (var item in attr)
             {
                 item.BookID = null;
             }
-            _db.Books.Remove(book);
-            try
+            if (book.DelId == HttpContext.Current.User.Identity.GetUserId())
             {
+                _db.Books.Remove(book);
                 await _db.SaveChangesAsync();
             }
-            catch (Exception e) { Console.WriteLine(e.Message); }
             return GetBooks(book);
         }
         public List<BookViewModel> GetAllBook()

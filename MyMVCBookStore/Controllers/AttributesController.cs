@@ -39,6 +39,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // GET: Attributes/Create
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.AttributeTypeId = new SelectList(db.AttributeTypes, "Id", "Name");
@@ -47,8 +48,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // POST: Attributes/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,AttributeTypeId,BookID,Value")] Attributes attributes)
@@ -66,6 +66,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // GET: Attributes/Edit/5
+        [Authorize]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,8 +84,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // POST: Attributes/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name,AttributeTypeId,BookID,Value")] Attributes attributes)
@@ -101,6 +101,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // GET: Attributes/Delete/5
+        [Authorize]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -116,6 +117,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // POST: Attributes/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)

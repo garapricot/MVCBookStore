@@ -20,6 +20,7 @@ namespace Dal
         public byte[] Image { get; set; }
         public Author Author { get; set; }
         public Country Country { get; set; }
+       
         public List<Attributes> Attribute { get; set; }
 
 

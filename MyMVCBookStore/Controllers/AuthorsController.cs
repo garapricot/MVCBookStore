@@ -34,18 +34,19 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
-            return View(author);
+            return View();
         }
 
         // GET: Authors/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Authors/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,BirthDay,Bio")] Author author)
@@ -61,6 +62,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // GET: Authors/Edit/5
+        [Authorize]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,12 +74,11 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
-            return View(author);
+            return View();
         }
 
         // POST: Authors/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,BirthDay,Bio")] Author author)
@@ -88,10 +89,11 @@ namespace MyMVCBookStore.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(author);
+            return View();
         }
 
         // GET: Authors/Delete/5
+        [Authorize]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -103,10 +105,11 @@ namespace MyMVCBookStore.Controllers
             {
                 return HttpNotFound();
             }
-            return View(author);
+            return View();
         }
 
         // POST: Authors/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)

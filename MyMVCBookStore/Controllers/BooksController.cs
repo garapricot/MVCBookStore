@@ -25,8 +25,9 @@ namespace MyMVCBookStore.Controllers
             {
                 result = _service.GetAllBook();
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 return View("Error");
             }
             return View(result);
@@ -63,6 +64,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // GET: 
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.AuthorId = new SelectList(_service.GetAuthors(), "Id", "FullName");
@@ -71,6 +73,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // POST:
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book, BookViewModel result, HttpPostedFileBase upimage)
@@ -94,6 +97,7 @@ namespace MyMVCBookStore.Controllers
             return PartialView("_Create", result);
         }
         // GET: 
+        [Authorize]
         public async Task<ActionResult> Edit(int? id, Book book)
         {
             var statuscode = await _service.GetStatusCode(id);
@@ -113,6 +117,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // POST: 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,CountryId,AuthorId,Title,Price,PublishedDay,Description,PageCount,Image")] Book book, HttpPostedFileBase upimage)
@@ -136,12 +141,14 @@ namespace MyMVCBookStore.Controllers
         }
 
         // GET: 
+        [Authorize]
         public async Task<ActionResult> Delete(int? id)
         {
             var statuscode = await _service.GetStatusCode(id);
             ViewBag.statuscode = statuscode.ToString();
             try
             {
+               
                 var result = await _service.GetBookListById(id);
                 return PartialView("_Delete", result);
             }
@@ -153,6 +160,7 @@ namespace MyMVCBookStore.Controllers
         }
 
         // POST:
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
